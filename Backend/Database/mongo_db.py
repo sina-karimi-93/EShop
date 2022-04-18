@@ -1,3 +1,4 @@
+from datetime import datetime
 import pymongo
 from pymongo import MongoClient
 
@@ -74,7 +75,7 @@ class Database:
 
         return dict or tuple
         """
-        collection = self.get_collection(collection_name=collection_name)
+        collection = self._get_collection(collection_name=collection_name)
         if insert_one:
             return collection.insert_one(document=document)
 
@@ -124,12 +125,9 @@ class Database:
 
 
 with Database(host='localhost', port=27017, db_name='eshop') as database:
-
+    database: Database
     criteria = {"title": "Kafsh"}
     document = {"$set": {"quantity": 5}}
 
-    database.update(collection_name='products',
-                    criteria=criteria,
-                    document=document,
-                    update_one=False,
-                    )
+    database.insert('categories', {"title": 'women',
+                    'create_date': datetime.now()})
