@@ -4,7 +4,7 @@ Each resource class have to inherit from BaseResource interface.
 """
 
 
-from Backend.Database.mongo_db import Database
+from Database.mongo_db import Database
 
 
 class Products:
