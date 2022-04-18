@@ -4,10 +4,16 @@ Each resource class have to inherit from BaseResource interface.
 """
 
 
+from Backend.Database.mongo_db import Database
+
+
 class Products:
 
     def on_get_list(self, request, response) -> None:
         """"""
+        with Database('localhost', 27017, 'eshop', 'products') as db:
+            db: Database
+            products = db.get_record(query={}, find_one=False)
 
     def on_get_detail(self, request, response, product_id) -> None:
         """"""
