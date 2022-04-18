@@ -21,6 +21,7 @@ def add_all_routes(app: falcon.App) -> None:
                               suffix=suffix[index]
                               )
             except IndexError as e:
+                # Did not added suffix
                 app.add_route(uri_template=url, resource=resource['resource'])
 
 
