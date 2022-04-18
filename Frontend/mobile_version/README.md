@@ -1,4 +1,4 @@
-# eshop
+# mobile_version
 
 A new Flutter project.
 

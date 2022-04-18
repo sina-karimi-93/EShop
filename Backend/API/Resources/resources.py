@@ -1,4 +1,7 @@
-
+"""
+This module is stands for defining resources (each route).
+Each resource class have to inherit from BaseResource interface.
+"""
 
 from Resources.interface import BaseResource
 
