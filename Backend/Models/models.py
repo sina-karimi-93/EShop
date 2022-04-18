@@ -1,10 +1,24 @@
-
+"""
+This module presents the data containers. Via these containers
+application can store the data in a meaningful way.
+"""
 
 from datetime import datetime
 from bson import objectid
 
 
 class Category:
+
+    """
+    This class is a data container for each category.
+
+    attributes:
+        category_id
+        title
+        create_date
+        products
+    """
+
     __slots__ = ('category_id', 'title', 'create_date', 'products')
 
     def __init__(self,
@@ -21,6 +35,21 @@ class Category:
 
 
 class Product:
+    """
+    This class is a data container for each product.
+
+    attributes:
+        product_id
+        title
+        price
+        create_date
+        category
+        description
+        images
+        colors
+        sizes
+        comments
+    """
     __slots__ = ('products_id', 'title', 'price',
                  'create_date', 'is_favorite', 'description',
                  'images', 'colors', 'sizes',
@@ -41,7 +70,6 @@ class Product:
         self.create_date = create_date
         self.category = kwargs.get('category')
 
-        self.is_favorite = kwargs.get('is_favorites')
         self.description = kwargs.get('description')
         self.images = kwargs.get('images')
         self.colors = kwargs.get('colors')
@@ -50,6 +78,18 @@ class Product:
 
 
 class User:
+    """
+    This class is a data container for each user.
+
+    attributes:
+        user_id
+        username
+        name
+        family
+        email
+        create_date
+    """
+
     __slots__ = ('user_id', 'username', 'name',
                  'family', 'email', 'create_date',
                  'phone_number')
@@ -63,6 +103,7 @@ class User:
                  create_date: datetime,
                  **kwargs) -> None:
 
+        self.user_id = user_id
         self.username = username
         self.name = name
         self.family = family
@@ -72,6 +113,17 @@ class User:
 
 
 class Blog:
+    """
+    This class is a data container for each blog.
+
+    attributes:
+        blog_id
+        title
+        description
+        create_date
+        comments
+    """
+
     __slots__ = ('blog_id', 'title', 'description',
                  'create_date', 'comments')
 
@@ -91,7 +143,15 @@ class Blog:
 
 
 class Comment:
+    """
+    This class is a data container for each comment.
 
+    attributes:
+        comment_id
+        message
+        create_date
+        reference
+    """
     __slots__ = ('comment_id', 'message', 'create_date',
                  'user', 'reference')
 

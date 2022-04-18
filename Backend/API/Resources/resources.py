@@ -19,9 +19,12 @@ def collect_resources() -> tuple:
         {'resource': resource(),
          'path': resource.get_pathes()
          }
-        for resource in BaseResource.__subclasses__())
+        for resource in BaseResource.__subclasses__()
+    )
 
     return resources
+
+# ================================= Resources =================================
 
 
 class Products(BaseResource):

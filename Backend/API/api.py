@@ -1,3 +1,8 @@
+"""
+The core of the API is here. For this application we use
+Falcon framework for API.
+"""
+
 import falcon
 from Resources.resources import collect_resources
 

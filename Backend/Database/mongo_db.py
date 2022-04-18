@@ -1,3 +1,10 @@
+"""
+This module stands for handilng datebase operations such as
+connect and disconnect and CRUD operations. The desired database
+is MongoDB.
+"""
+
+
 from datetime import datetime
 import pymongo
 from pymongo import MongoClient
