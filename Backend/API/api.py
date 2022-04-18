@@ -4,30 +4,28 @@ Falcon framework for API.
 """
 
 import falcon
-from Resources.resources import collect_resources
+from Resources.resources import *
 
 app = application = falcon.App()
 
+# instantiate resources
 
-def add_all_routes(app: falcon.App) -> None:
-    """
-
-    """
-
-    for index, resource in enumerate(collect_resources()):
-
-        urls: tuple = resource['path']['uri']
-        suffix: tuple = resource['path']['suffix']
-
-        for index, url in enumerate(urls):
-            try:
-                app.add_route(uri_template=url,
-                              resource=resource['resource'],
-                              suffix=suffix[index]
-                              )
-            except IndexError as e:
-                # Suffix is not provided
-                app.add_route(uri_template=url, resource=resource['resource'])
+products = Products()
+users = Users()
+blogs = Blogs()
+categories = Categories()
+comments = Comments()
 
 
-add_all_routes(app)
+# Add routes
+
+app.add_route('/products', products, suffix='list')
+app.add_route('/products/{product_id}', products, suffix='detail')
+
+app.add_route('/blogs', blogs, suffix='list')
+app.add_route('/blogs/{blog_id}', blogs, suffix='detail')
+
+app.add_route('/categories', categories, suffix='list')
+app.add_route('/categories/{category_id}', categories, suffix='detail')
+
+app.add_route('/comments', comments)

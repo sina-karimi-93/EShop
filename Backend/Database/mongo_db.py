@@ -6,7 +6,6 @@ is MongoDB.
 
 
 from datetime import datetime
-import pymongo
 from pymongo import MongoClient
 
 
@@ -21,12 +20,18 @@ class Database:
         get()
         update()
 
-    magic methods:
+    Context Manager:
         __enter__()
         __exit__()
     """
 
-    def __init__(self, host: str, port: int, db_name: str):
+    def __init__(self,
+                 host: str,
+                 port: int,
+                 db_name: str,
+                 collection_name: str,
+                 **kwargs
+                 ):
         """
         Here we connect to the MongoDB via MongoClient and get the desired database.
 
@@ -37,6 +42,7 @@ class Database:
         """
         self.client = MongoClient(host=host, port=port)
         self.db = self.client[db_name]
+        self.collection = self.db[collection_name]
 
     def __enter__(self) -> None:
         """
@@ -56,20 +62,7 @@ class Database:
         """
         self.client.close()
 
-    def _get_collection(self, collection_name: str) -> pymongo.collection:
-        """
-        This private method get the collection from the database.
-        If the desired collection is not in the database, it will
-        raise an AttributeError.
-        """
-
-        collections = self.db.list_collection_names()
-        collection_count = collections.count(collection_name)
-        if collection_count > 0:
-            return self.db[collection_name]
-        raise AttributeError("The desired collection was not found!")
-
-    def insert(self, collection_name: str, document: dict or list, insert_one: bool = True) -> None:
+    def insert_record(self, document: dict or list, insert_one: bool = True) -> None:
         """
         This method is stands for create operation in CRUD.
         First it gets the collection name and based on the insert type (one or many), 
@@ -82,13 +75,12 @@ class Database:
 
         return dict or tuple
         """
-        collection = self._get_collection(collection_name=collection_name)
         if insert_one:
-            return collection.insert_one(document=document)
+            return self.collection.insert_one(document=document)
 
-        return tuple(collection.insert_many(document))
+        return self.collection.insert_many(document)
 
-    def get(self, collection_name: str, query: dict, find_one: bool = True) -> dict or tuple:
+    def get_record(self, query: dict, find_one: bool = True, **kwargs) -> dict or tuple:
         """
         This method is stands for read operation in CRUD.
         First it gets the collection name and based on the finding type(one or many), 
@@ -102,14 +94,12 @@ class Database:
         return:
             dict or tuple
         """
-        collection = self._get_collection(collection_name=collection_name)
-
         if find_one:
-            return collection.find_one(filter=query)
+            return self.collection.find_one(filter=query)
 
-        return tuple(collection.find(query))
+        return self.collection.find(query)
 
-    def update(self, collection_name: str, criteria: dict, document: dict, update_one: bool = True) -> None:
+    def update_record(self, criteria: dict, document: dict, update_one: bool = True) -> None:
         """
         This method is stands for update operation in CRUD.
         First it gets the collection name and based on the updating type(one or many), 
@@ -123,15 +113,14 @@ class Database:
         return:
             dict or tuple
         """
-        collection = self._get_collection(collection_name=collection_name)
 
         if update_one:
-            return collection.update_one(filter=criteria, update=document)
+            return self.collection.update_one(filter=criteria, update=document)
 
-        return tuple(collection.update_many(filter=criteria, update=document))
+        return self.collection.update_many(filter=criteria, update=document)
 
 
-with Database(host='localhost', port=27017, db_name='eshop') as database:
+with Database('localhost', 27017, db_name='eshop', collection_name='products') as database:
     database: Database
     criteria = {"title": "Kafsh"}
     document = {"$set": {"quantity": 5}}
