@@ -246,3 +246,24 @@ yarn-error.log*
 .vercel
 
 # End of https://www.toptal.com/developers/gitignore/api/react,nextjs
+
+
+### NextJS ###
+# Next build dir
+.next/
+
+### react ###
+.DS_*
+*.log
+logs
+**/*.backup.*
+**/*.back.*
+
+node_modules
+bower_components
+
+*.sublime*
+
+psd
+thumb
+sketch
