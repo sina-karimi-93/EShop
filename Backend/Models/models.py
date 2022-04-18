@@ -23,13 +23,15 @@ class Category:
 class Product:
     __slots__ = ('products_id', 'title', 'price',
                  'create_date', 'is_favorite', 'description',
-                 'images', 'colors', 'sizes', 'comments')
+                 'images', 'colors', 'sizes',
+                 'comments', 'category')
 
     def __init__(self,
                  product_id: objectid,
                  title: str,
                  price: float,
                  create_date: datetime,
+
                  **kwargs
                  ) -> None:
 
@@ -37,6 +39,7 @@ class Product:
         self.title = title
         self.price = price
         self.create_date = create_date
+        self.category = kwargs.get('category')
 
         self.is_favorite = kwargs.get('is_favorites')
         self.description = kwargs.get('description')
