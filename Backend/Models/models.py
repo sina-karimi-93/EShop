@@ -4,7 +4,7 @@ application can store the data in a meaningful way.
 """
 
 from datetime import datetime
-from bson import objectid
+from bson.objectid import ObjectId
 
 
 class Category:
@@ -22,7 +22,7 @@ class Category:
     __slots__ = ('category_id', 'title', 'create_date', 'products')
 
     def __init__(self,
-                 category_id: objectid,
+                 category_id: ObjectId,
                  title: str,
                  craete_date: datetime,
                  **kwargs
@@ -56,7 +56,7 @@ class Product:
                  'comments', 'category')
 
     def __init__(self,
-                 product_id: objectid,
+                 product_id: ObjectId,
                  title: str,
                  price: float,
                  create_date: datetime,
@@ -95,7 +95,7 @@ class User:
                  'phone_number')
 
     def __init__(self,
-                 user_id: objectid,
+                 user_id: ObjectId,
                  username: str,
                  name: str,
                  family: str,
@@ -128,7 +128,7 @@ class Blog:
                  'create_date', 'comments')
 
     def __init__(self,
-                 blog_id: objectid,
+                 blog_id: ObjectId,
                  title: str,
                  description: str,
                  create_date: datetime,
@@ -156,7 +156,7 @@ class Comment:
                  'user', 'reference')
 
     def __init__(self,
-                 comment_id: objectid,
+                 comment_id: ObjectId,
                  message: str,
                  create_date: datetime,
                  user: User,

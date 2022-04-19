@@ -8,7 +8,6 @@ is MongoDB.
 from datetime import datetime
 from pymongo import MongoClient
 
-
 class Database:
 
     """
@@ -118,12 +117,3 @@ class Database:
             return self.collection.update_one(filter=criteria, update=document)
 
         return self.collection.update_many(filter=criteria, update=document)
-
-
-with Database('localhost', 27017, db_name='eshop', collection_name='products') as database:
-    database: Database
-    criteria = {"title": "Kafsh"}
-    document = {"$set": {"quantity": 5}}
-
-    database.insert('categories', {"title": 'women',
-                    'create_date': datetime.now()})
