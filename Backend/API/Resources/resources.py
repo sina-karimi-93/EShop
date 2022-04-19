@@ -4,39 +4,10 @@ Each resource class have to inherit from BaseResource interface.
 """
 
 import falcon
-from pprint import pprint
+from datetime import datetime
+from bson.objectid import ObjectId
 from Database.mongo_db import Database
-from Models.models import *
-from bson import json_util
-
-
-def prepare_get_data(response, data: list or dict) -> None:
-    """
-    This function stands for preparing and return data as a response.
-    First vai json_utils, data will be serialized as a json, then
-    through response, it will be returned.
-
-    params:
-        response -> falcon response
-        data -> list or dict
-    """
-
-    serialized_data = json_util.dumps(data)
-    response.media = serialized_data
-    response.status = falcon.HTTP_200
-
-
-def prepare_post_data(request) -> dict:
-    """
-    This function prepare and reshape the data which came from
-    through a post http method. First it read the data through
-    request.stream.read(), then decode it with utf-8. Finally
-    turn it to python dict with json_utils.loads and return it.
-    """
-    data = request.stream.read()
-    data = data.decode("utf-8")
-    data = json_util.loads(data)
-    return data
+from ..Tools.tools import APITools
 
 
 class Products:
@@ -50,7 +21,7 @@ class Products:
 
             products = tuple(db.get_record(query=None, find_one=False))
 
-        prepare_get_data(response, products)
+        APITools.check_prepare_send(response, products)
 
     def on_get_detail(self, request, response, product_id: str) -> None:
         """
@@ -63,16 +34,60 @@ class Products:
 
         with Database('localhost', 27017, 'eshop', 'products') as db:
             db: Database
+            try:
+                product = db.get_record(query={"_id": ObjectId(product_id)}, find_one=True)
 
-            product = db.get_record(
-                {"_id": ObjectId(product_id)})
+                APITools.check_prepare_send(response, product)
 
-        prepare_get_data(response, product)
+            except Exception as e:
+                response.media = falcon.HTTP_404
+                print(f"Products/on_get_detail -> {e}")
 
     def on_post(self, request, response) -> None:
-        """"""
+        """
+        This function is for a post request and return a single product(s)
+        ids after inserting into database.
+        """
 
-        data = prepare_post_data(request)
+        data = APITools.prepare_posted_data(request)
+
+        with Database('localhost', 27017, 'eshop', 'products') as db:
+            db: Database
+
+            product_ids = db.insert_record(document=data)
+
+        reshaped_ids = APITools.reshape_post_ids(product_ids)
+
+        APITools.prepare_send_data(response, reshaped_ids)
+
+    def on_put_detail(self, request, response, product_id) -> None:
+        """
+        This function is for a put request. It is responsible for
+        adding comments on each product.
+
+        desired data is like below:
+            {
+                "message": "some text message",
+                "owner:: 'user-id'
+            }
+        """
+
+        data = APITools.prepare_post_data(request)
+        prepared_data = {
+            "id": ObjectId(),
+            "message": data["message"],
+            "owner": ObjectId(data["owner"]),
+            "create_date": datetime.now()
+        }
+
+        with Database('localhost', 27017, 'eshop', 'products') as db:
+
+            db.update_record(criteria={"_id": ObjectId(product_id)},
+                             document={"$push": {"comments": prepared_data}},
+                             )
+
+        response.media = {"status": falcon.HTTP_200}
+        response.status = falcon.HTTP_200
 
 
 class Blogs:

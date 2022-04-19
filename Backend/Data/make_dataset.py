@@ -1,6 +1,6 @@
 from datetime import datetime
 from bson import ObjectId, json_util
-dataset = [
+products = [
     {
         "title": "Leather Shoe",
         "price": 119.99,
@@ -137,6 +137,32 @@ dataset = [
 
 ]
 
-with open("sample-data.json", "w") as f:
-    a = json_util.dumps(dataset)
-    f.write(a)
+users = [
+    {
+        "username": "sina",
+        "name": "Sina",
+        "family": "Karimi",
+        "email": "sinakmi70@gmail.com",
+        "create_date": datetime.now()
+    },
+
+    {
+        "username": "ali",
+        "name": "Ali",
+        "family": "Karimi",
+        "email": "alikarimi@gmail.com",
+        "create_date": datetime.now()
+    },
+
+    {
+        "username": "mohammad",
+        "name": "Mohammad",
+        "family": "Karimi",
+        "email": "mkarimi@gmail.com",
+        "create_date": datetime.now()
+    },
+]
+
+# with open("./Data/users.json", "w") as f:
+#     a = json_util.dumps(users)
+#     f.write(a)

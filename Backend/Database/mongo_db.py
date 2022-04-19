@@ -7,6 +7,7 @@ is MongoDB.
 
 from datetime import datetime
 from functools import wraps
+from bson import ObjectId
 from pymongo import MongoClient
 
 
@@ -75,7 +76,7 @@ class Database:
         """
         self.client.close()
 
-    def insert_record(self, document: dict or list, insert_one: bool = True) -> None:
+    def insert_record(self, document: dict or list) -> ObjectId or list:
         """
         This method is stands for create operation in CRUD.
         First it gets the collection name and based on the insert type (one or many), 
@@ -88,10 +89,11 @@ class Database:
 
         return dict or tuple
         """
-        if insert_one:
-            return self.collection.insert_one(document=document)
+        if isinstance(document, dict):
 
-        return self.collection.insert_many(document)
+            return self.collection.insert_one(document=document).inserted_id
+        # document is list
+        return self.collection.insert_many(document).inserted_ids
 
     def get_record(self, query: dict, find_one: bool = True, **kwargs) -> dict or tuple:
         """
@@ -131,3 +133,11 @@ class Database:
             return self.collection.update_one(filter=criteria, update=document)
 
         return self.collection.update_many(filter=criteria, update=document)
+
+
+# with Database('localhost', 27017, 'eshop', 'users') as db:
+#     db: Database
+
+#     a = db.insert_record(
+#         document=[{"title": "1111chtori"}, {"title": "salammmmmm"}])
+# print(a)
