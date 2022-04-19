@@ -13,19 +13,15 @@ app = application = falcon.App()
 products = Products()
 users = Users()
 blogs = Blogs()
-categories = Categories()
-comments = Comments()
 
 
 # Add routes
 
-app.add_route('/products', products, suffix='list')
+app.add_route('/products', products)
 app.add_route('/products/{product_id}', products, suffix='detail')
 
-app.add_route('/blogs', blogs, suffix='list')
+app.add_route('/blogs', blogs)
 app.add_route('/blogs/{blog_id}', blogs, suffix='detail')
 
-app.add_route('/categories', categories, suffix='list')
-app.add_route('/categories/{category_id}', categories, suffix='detail')
-
-app.add_route('/comments', comments)
+app.add_route('/users', users)
+app.add_route('/users/{user_id}', users, suffix='detail')

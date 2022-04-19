@@ -6,7 +6,9 @@ is MongoDB.
 
 
 from datetime import datetime
+from functools import wraps
 from pymongo import MongoClient
+
 
 class Database:
 
@@ -41,7 +43,19 @@ class Database:
         """
         self.client = MongoClient(host=host, port=port)
         self.db = self.client[db_name]
-        self.collection = self.db[collection_name]
+        self.collection = collection_name
+
+    @property
+    def collection(self):
+        return self._collection
+
+    @collection.setter
+    def collection(self, value) -> None:
+        """"""
+        collections = self.db.list_collection_names()
+        if not value in collections:
+            raise ValueError("There is not desired collection!")
+        self._collection = self.db[value]
 
     def __enter__(self) -> None:
         """
