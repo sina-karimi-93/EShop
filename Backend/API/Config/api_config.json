@@ -1,0 +1,11 @@
+{
+    "server": "localhost",
+    "port": 27017,
+    "db_name": "eshop",
+    "responses": {
+        "ok": {
+            "status": "ok",
+            "message": ""
+        }
+    }
+}

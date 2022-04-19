@@ -1,8 +1,23 @@
+import json
 import falcon
 from bson import json_util
 
 
 class APITools:
+
+    @staticmethod
+    def get_config(path: str) -> dict:
+        """
+        This method loads the config from a json file in 
+        Config folder
+
+        params:
+            path:str
+        """
+
+        with open(path, 'r') as f:
+            config = f.read()
+        return json.loads(config)
 
     @staticmethod
     def check_prepare_send(response, data: list or dict) -> None:
@@ -18,7 +33,7 @@ class APITools:
         if data:
             serialized_data = json_util.dumps(data)
             response.media = serialized_data
-            response.status = falcon.HTTP_200
+            response.status = falcon.HTTP_201
             return
         response.media = falcon.HTTP_404
 

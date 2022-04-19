@@ -5,8 +5,6 @@ is MongoDB.
 """
 
 
-from datetime import datetime
-from functools import wraps
 from bson import ObjectId
 from pymongo import MongoClient
 
@@ -95,7 +93,7 @@ class Database:
         # document is list
         return self.collection.insert_many(document).inserted_ids
 
-    def get_record(self, query: dict, find_one: bool = True, **kwargs) -> dict or tuple:
+    def get_record(self, query: dict, projection: dict = None, find_one: bool = True, **kwargs) -> dict or tuple:
         """
         This method is stands for read operation in CRUD.
         First it gets the collection name and based on the finding type(one or many), 
@@ -110,9 +108,9 @@ class Database:
             dict or tuple
         """
         if find_one:
-            return self.collection.find_one(filter=query)
+            return self.collection.find_one(query, projection)
 
-        return self.collection.find(query)
+        return self.collection.find(query, projection)
 
     def update_record(self, criteria: dict, document: dict, update_one: bool = True) -> None:
         """
@@ -133,6 +131,20 @@ class Database:
             return self.collection.update_one(filter=criteria, update=document)
 
         return self.collection.update_many(filter=criteria, update=document)
+
+    def delete_record(self, criteria: dict, delete_one: bool = True) -> None:
+        """
+        This method is stands for remove operation in CRUD.
+        First it based on the deleting type(one or many), it will remove
+        the document or nested document or field.
+
+        params:
+            criteria:dict
+            delete_one:bool
+        """
+        if delete_one:
+            return self.collection.delete_one(criteria)
+        self.collection.delete_many(criteria)
 
 
 # with Database('localhost', 27017, 'eshop', 'users') as db:
