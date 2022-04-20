@@ -13,7 +13,7 @@ app = application = falcon.App()
 products = Products()
 users = Users()
 blogs = Blogs()
-
+admin = Admin()
 
 # Add routes
 
@@ -28,3 +28,6 @@ app.add_route('/blogs/{blog_id}', blogs, suffix='detail')
 
 app.add_route('/users', users)
 app.add_route('/users/{user_id}', users, suffix='detail')
+
+
+app.add_route('admin', admin)

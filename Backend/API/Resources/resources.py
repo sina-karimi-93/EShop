@@ -177,3 +177,7 @@ class Users:
 
     def on_post(self, request, response) -> None:
         """"""
+
+
+class Admin:
+    pass
