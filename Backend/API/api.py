@@ -30,4 +30,4 @@ app.add_route('/users', users)
 app.add_route('/users/{user_id}', users, suffix='detail')
 
 
-app.add_route('admin', admin)
+app.add_route('/admin', admin)

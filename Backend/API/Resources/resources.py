@@ -36,7 +36,7 @@ class Products:
     #     ids after inserting into database.
     #     """
 
-    #     data = APITools.prepare_posted_data(request)
+    #     data = APITools.prepare_header_data(request)
 
     #     with Database(SERVER, PORT, DB_NAME, 'products') as db:
     #         db: Database
@@ -79,7 +79,7 @@ class Products:
                 "owner:: 'user-id'
             }
         """
-        data = APITools.prepare_posted_data(request)
+        data = APITools.prepare_header_data(request)
 
         prepared_data = {
             "id": ObjectId(),
@@ -105,7 +105,7 @@ class Products:
         the user id is match with comment owner or not. If yes it will
         remove the comment, and if not it will response error.
         """
-        data = APITools.prepare_posted_data(request)
+        data = APITools.prepare_header_data(request)
         user_id = ObjectId(data["user_id"])
         product_id = ObjectId(product_id)
         comment_id = ObjectId(comment_id)
@@ -132,9 +132,9 @@ class Products:
         editing a comment on each product.
         user id is come through header (stream) and we check whether
         the user id is match with comment owner or not. If yes it will
-        remove the comment, and if not it will response error.
+        edit the comment, and if not it will response error.
         """
-        data = APITools.prepare_posted_data(request)
+        data = APITools.prepare_header_data(request)
         user_id = ObjectId(data["user_id"])
         updated_message = data["message"]
         product_id = ObjectId(product_id)
@@ -158,13 +158,37 @@ class Products:
 class Blogs:
 
     def on_get(self, request, response) -> None:
-        """"""
+        """
+        This function is for a get request and returns all blogs
+        from database.
+        """
 
-    def on_get_detail(self, request, response, blog_id) -> None:
-        """"""
+        with Database(SERVER, PORT, DB_NAME, 'blogs') as db:
+            db: Database
 
-    def on_put(self, request, response) -> None:
-        """"""
+            blogs = db.get_record(query=None, find_one=False)
+
+        APITools.check_prepare_send(response, blogs)
+
+    def on_get_detail(self, request, response, blog_id: str) -> None:
+        """
+        This function is for a get request and returns a single blog
+        from database based on specific blog_id.
+
+        params:
+            blog_id
+        """
+
+        with Database(SERVER, PORT, DB_NAME, 'blogs') as db:
+            db: Database
+            try:
+                single_blog = db.get_record(query={"_id": ObjectId(blog_id)})
+
+            except InvalidId as e:
+                response.media = {"error": "Wrong ObjectId"}
+                print(f"Products/on_get_detail -> {e}")
+
+        APITools.check_prepare_send(response, single_blog)
 
 
 class Users:

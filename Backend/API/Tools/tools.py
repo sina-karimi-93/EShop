@@ -38,7 +38,7 @@ class APITools:
         response.media = falcon.HTTP_404
 
     @staticmethod
-    def prepare_posted_data(request) -> dict or list:
+    def prepare_header_data(request) -> dict or list:
         """
         This function prepare and reshape the data which came from
         through a post http method. First it read the data through
