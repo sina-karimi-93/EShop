@@ -1,4 +1,5 @@
 import json
+from pprint import pprint
 import falcon
 from bson import json_util
 
@@ -31,7 +32,8 @@ class APITools:
             data -> list or dict
         """
         if data:
-            serialized_data = json_util.dumps(data)
+            reshape_fields = json_util.dumps(data)
+            serialized_data = json.loads(reshape_fields)
             response.media = serialized_data
             response.status = falcon.HTTP_201
             return

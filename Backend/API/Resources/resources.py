@@ -24,11 +24,14 @@ class Products:
         This function is for a get request and returns all products
         from database.
         """
+        print("There is a request...")
         with Database(SERVER, PORT, DB_NAME, 'products') as db:
 
-            products = tuple(db.get_record(query=None, find_one=False))
+            products = [data for data in db.get_record(
+                query=None, find_one=False)]
 
         APITools.check_prepare_send(response, products)
+        print("Request has beeen answered!")
 
     # def on_post(self, request, response) -> None:
     #     """
