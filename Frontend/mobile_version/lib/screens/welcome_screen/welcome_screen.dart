@@ -26,7 +26,7 @@ class WelcomeScreen extends StatelessWidget {
           ),
         ),
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
+          filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
           child: Container(
             color: Colors.black.withOpacity(0),
             child: Column(
@@ -43,6 +43,42 @@ class WelcomeScreen extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.secondary,
+                          fontSize: 16,
+                          letterSpacing: 0.5,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 3),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      color: Colors.black.withOpacity(0.6),
+                      child: const Text(
+                        "This version is fully responsive and can run in phones and tablets perfectly.",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.redAccent,
+                          fontSize: 16,
+                          letterSpacing: 0.5,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 3),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      color: Colors.black.withOpacity(0.6),
+                      child: const Text(
+                        "There are a lot of sections for this project, namely Shop, Blogs and Face Recognition.",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.deepOrange,
                           fontSize: 16,
                           letterSpacing: 0.5,
                           fontWeight: FontWeight.bold,
