@@ -87,9 +87,20 @@ class Products:
 
         APITools.check_prepare_send(response, next(categories_cursor))
 
-    def on_get_categories_products(self, request, response, category_name: str) -> None:
+    def on_get_category_products(self, request, response, category_name: str) -> None:
         """
+        This method get a category name through url and return all products which
+        they have this category in their categories array.
         """
+        with Database(SERVER, PORT, DB_NAME, 'products') as db:
+            db: Database
+
+            cursor = db.get_record(
+                {"categories": {"$all": [category_name]}}, find_one=False)
+
+            products = list(cursor)
+
+        APITools.check_prepare_send(response, products)
 
     def on_post_comment(self, request, response, product_id) -> None:
         """
