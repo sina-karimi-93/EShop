@@ -7,13 +7,18 @@ import 'package:http/http.dart' as http;
 
 class ProductsProvider with ChangeNotifier {
   final List<Product> _products = [];
+  final List<String> _categories = [];
 
   List<Product> get products {
     return [..._products];
   }
 
-  Future<dynamic> _getProductsFromServer() async {
-    final url = Uri.http('10.0.2.2:8000', '/products');
+  List<String> get categories {
+    return [..._categories];
+  }
+
+  Future<dynamic> _getDataFromServer(String path) async {
+    final url = Uri.http('10.0.2.2:8000', path);
 
     var response = await http.get(url);
     var data = response.body;
@@ -21,12 +26,16 @@ class ProductsProvider with ChangeNotifier {
     return decodedData;
   }
 
+  Future<void> prepareAllCategories() async {
+    var loadedCategories = await _getDataFromServer('/products/categories');
+    for (String element in loadedCategories["categories"]!) {
+      _categories.add(element);
+    }
+  }
+
   Future<void> prepareProducts() async {
-    var loadedProducts = await _getProductsFromServer();
-    // List<Map<String, dynamic>> rearrangedProducts = [];
-    // loadedProducts.forEach((element) {
-    //   rearrangedProducts.add(element);
-    // });
+    var loadedProducts = await _getDataFromServer('/products');
+
     for (var product in loadedProducts) {
       _products.add(
         Product(

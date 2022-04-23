@@ -3,6 +3,8 @@ import 'package:mobile_version/Models/product.dart';
 import 'package:mobile_version/providers/products_provider.dart';
 import 'package:provider/provider.dart';
 
+import 'categories.dart';
+
 class ProductsScreen extends StatefulWidget {
   const ProductsScreen({Key? key}) : super(key: key);
 
@@ -15,11 +17,13 @@ class _ProductsScreenState extends State<ProductsScreen> {
 
   @override
   void didChangeDependencies() {
+    Provider.of<ProductsProvider>(context).prepareProducts();
     Provider.of<ProductsProvider>(context)
-        .prepareProducts()
-        .then((_) => setState(() {
+        .prepareAllCategories()
+        .then((value) => setState(() {
               _isProductsLoaded = true;
             }));
+
     super.didChangeDependencies();
   }
 
@@ -28,18 +32,64 @@ class _ProductsScreenState extends State<ProductsScreen> {
     final List<Product> products =
         Provider.of<ProductsProvider>(context).products;
 
+    final List<String> categories =
+        Provider.of<ProductsProvider>(context).categories;
+
+    final Size size = MediaQuery.of(context).size;
+
+    final bool isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
+
     return Scaffold(
-      appBar: AppBar(),
+      backgroundColor: Theme.of(context).colorScheme.primary,
       body: !_isProductsLoaded
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(
+              child: CircularProgressIndicator(
+              color: Theme.of(context).colorScheme.secondary,
+            ))
           : SafeArea(
               child: Padding(
-                padding: const EdgeInsets.all(12.0),
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
                 child: Column(
                   children: [
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(children: []),
+                    Text(
+                      "Categories",
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                    const Divider(),
+                    Categories(
+                      isPortrait: isPortrait,
+                      size: size,
+                      categories: categories,
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      "Products",
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                    const Divider(),
+                    Expanded(
+                      child: GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                          ),
+                          itemBuilder: (context, index) {
+                            return Container(
+                                margin: EdgeInsets.all(15),
+                                color: Colors.white,
+                                child: GridTile(
+                                  child: Text(products[index].title),
+                                ));
+                          }),
                     )
                   ],
                 ),
