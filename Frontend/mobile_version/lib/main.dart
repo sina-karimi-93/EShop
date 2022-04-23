@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // Screens
-import './screens/home_screen/home_screen.dart';
+import './screens/welcome_screen/welcome_screen.dart';
 // Providers
 import './providers/products_provider.dart';
 
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
             secondary: const Color.fromRGBO(230, 120, 0, 1),
           ),
         ),
-        home: const HomeScreen(),
+        home: const WelcomeScreen(),
       ),
     );
   }
