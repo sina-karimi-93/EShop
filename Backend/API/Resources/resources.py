@@ -71,6 +71,26 @@ class Products:
                 response.media = {"error": "Wrong ObjectId"}
                 print(f"Products/on_get_detail -> {e}")
 
+    def on_get_categories(self, request, response) -> None:
+        """
+        This function is for a get request and returns all products
+         categories from database.
+        """
+        with Database(SERVER, PORT, DB_NAME, 'products') as db:
+            db: Database
+
+            categories_cursor = db.aggregate([
+                {"$unwind": "$categories"},
+                {"$group": {"_id": 0, "categories": {"$addToSet": "$categories"}}},
+                {"$project": {"_id": 0}}
+            ])
+
+        APITools.check_prepare_send(response, next(categories_cursor))
+
+    def on_get_categories_products(self, request, response, category_name: str) -> None:
+        """
+        """
+
     def on_post_comment(self, request, response, product_id) -> None:
         """
         This function is for a put request. It is responsible for
