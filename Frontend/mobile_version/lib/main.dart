@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = ThemeData();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: ProductsProvider()),
@@ -21,8 +22,11 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
+        theme: theme.copyWith(
+          colorScheme: theme.colorScheme.copyWith(
+            primary: const Color.fromRGBO(20, 35, 51, 1),
+            secondary: const Color.fromRGBO(230, 120, 0, 1),
+          ),
         ),
         home: const HomeScreen(),
       ),

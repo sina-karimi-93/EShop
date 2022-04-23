@@ -1,41 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_version/providers/products_provider.dart';
-import 'package:provider/provider.dart';
 
-class HomeScreen extends StatefulWidget {
+import 'home_screen_item.dart';
+
+class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  bool _isLoaded = false;
-
-  @override
-  void didChangeDependencies() {
-    Provider.of<ProductsProvider>(context).prepareProducts().then((_) {
-      setState(() {
-        _isLoaded = true;
-      });
-    });
-    super.didChangeDependencies();
+  List<Widget> get homeScreenWidgets {
+    return const [
+      HomeScreenItem(image: './assets/images/shop1.jpg', title: 'SHOP'),
+      HomeScreenItem(image: './assets/images/blog1.jpg', title: 'BLOG'),
+      HomeScreenItem(
+          image: './assets/images/ai1.jpg', title: 'FACE RECOGNITION'),
+    ];
   }
 
   @override
   Widget build(BuildContext context) {
-    final products = Provider.of<ProductsProvider>(context).products;
+    final Size size = MediaQuery.of(context).size;
+    final bool isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
+
     return Scaffold(
-      body: !_isLoaded
-          ? Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: products.length,
-              itemBuilder: (ctx, index) => Column(
-                children: [
-                  Text(products[index].title),
-                ],
-              ),
-            ),
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+              vertical: size.height * 0.03, horizontal: size.width * 0.03),
+          child: isPortrait
+              ? SingleChildScrollView(
+                  child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: homeScreenWidgets,
+                ))
+              : GridView(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 3 / 2,
+                    crossAxisSpacing: 15,
+                    mainAxisSpacing: 15,
+                  ),
+                  children: homeScreenWidgets,
+                ),
+        ),
+      ),
     );
   }
 }
