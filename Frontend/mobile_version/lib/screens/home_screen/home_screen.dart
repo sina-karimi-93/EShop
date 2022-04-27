@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_version/screens/blogs_screen/blogs_screen.dart';
 import 'package:mobile_version/screens/face_recognition_screen/face_recognition_screen.dart';
+import 'package:provider/provider.dart';
+import '../../providers/products_provider.dart';
 import '../../widgets/animated_page_route.dart';
 import '../products_screen/products_screen.dart';
 

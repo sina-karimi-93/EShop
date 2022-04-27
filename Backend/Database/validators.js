@@ -42,8 +42,3 @@ products_validator = {
     },
     validationAction: "error"
 }
-db.products.aggregate([
-    { $unwind: "$categories" },
-    { $group: { _id: 0, categories: { $addToSet: "$categories" } } },
-    { $project: { _id: 0 } }
-]).pretty()

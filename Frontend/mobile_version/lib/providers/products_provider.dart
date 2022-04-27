@@ -18,24 +18,27 @@ class ProductsProvider with ChangeNotifier {
   }
 
   Future<dynamic> _getDataFromServer(String path) async {
-    final url = Uri.http('10.0.2.2:8000', path);
+    try {
+      final url = Uri.http('10.0.2.2:8000', path);
 
-    var response = await http.get(url);
-    var data = response.body;
-    var decodedData = json.decode(data);
-    return decodedData;
+      var response = await http.get(url);
+      var data = response.body;
+      var decodedData = json.decode(data);
+      return decodedData;
+    } catch (error) {}
   }
 
-  Future<void> prepareAllCategories() async {
-    var loadedCategories = await _getDataFromServer('/products/categories');
-    for (String element in loadedCategories["categories"]!) {
-      _categories.add(element);
+  void _prepareCategories(loadedCategories) {
+    try {
+      for (String element in loadedCategories["categories"]!) {
+        _categories.add(element);
+      }
+    } catch (error) {
+      rethrow;
     }
   }
 
-  Future<void> prepareProducts() async {
-    var loadedProducts = await _getDataFromServer('/products');
-
+  void _prepareProducts(var loadedProducts) {
     for (var product in loadedProducts) {
       _products.add(
         Product(
@@ -51,6 +54,18 @@ class ProductsProvider with ChangeNotifier {
           comments: product["sizes"],
         ),
       );
+    }
+  }
+
+  Future<void> prepareProductsData() async {
+    try {
+      var loadedProducts = await _getDataFromServer('/products');
+      var loadedCategories = await _getDataFromServer('/products/categories');
+      _prepareProducts(loadedProducts);
+      _prepareCategories(loadedCategories);
+      notifyListeners();
+    } catch (error) {
+      rethrow;
     }
   }
 }

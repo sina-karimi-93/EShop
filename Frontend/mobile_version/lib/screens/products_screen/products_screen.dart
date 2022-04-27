@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_version/Models/product.dart';
 import 'package:mobile_version/providers/products_provider.dart';
+import 'package:mobile_version/screens/products_screen/products.dart';
 import 'package:provider/provider.dart';
 
 import 'categories.dart';
@@ -13,36 +13,40 @@ class ProductsScreen extends StatefulWidget {
 }
 
 class _ProductsScreenState extends State<ProductsScreen> {
-  bool _isProductsLoaded = false;
+  bool _isLoading = false;
+  bool _isInit = true;
+
+  Future<void> initializeData() async {
+    // if (_isInit) {
+    //   setState(() {
+    //     _isLoading = true;
+    //   });
+    Provider.of<ProductsProvider>(context)
+        .prepareProductsData()
+        .then((_) => setState(
+              () {
+                _isLoading = false;
+              },
+            ));
+    // }
+    _isInit = false;
+  }
 
   @override
   void didChangeDependencies() {
-    Provider.of<ProductsProvider>(context).prepareProducts();
-    Provider.of<ProductsProvider>(context)
-        .prepareAllCategories()
-        .then((value) => setState(() {
-              _isProductsLoaded = true;
-            }));
-
+    initializeData();
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<Product> products =
-        Provider.of<ProductsProvider>(context).products;
-
-    final List<String> categories =
-        Provider.of<ProductsProvider>(context).categories;
-
     final Size size = MediaQuery.of(context).size;
-
     final bool isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
-
+    initializeData().then((_) {});
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
-      body: !_isProductsLoaded
+      body: _isLoading
           ? Center(
               child: CircularProgressIndicator(
               color: Theme.of(context).colorScheme.secondary,
@@ -64,9 +68,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     Categories(
                       isPortrait: isPortrait,
                       size: size,
-                      categories: categories,
                     ),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 10),
                     Text(
                       "Products",
                       style: TextStyle(
@@ -76,21 +79,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                       ),
                     ),
                     const Divider(),
-                    Expanded(
-                      child: GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                          ),
-                          itemBuilder: (context, index) {
-                            return Container(
-                                margin: EdgeInsets.all(15),
-                                color: Colors.white,
-                                child: GridTile(
-                                  child: Text(products[index].title),
-                                ));
-                          }),
-                    )
+                    const Products(),
                   ],
                 ),
               ),

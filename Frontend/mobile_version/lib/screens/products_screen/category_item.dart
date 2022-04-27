@@ -29,7 +29,7 @@ class CategoryItem extends StatelessWidget {
                   spreadRadius: 3,
                 )
               ]),
-          width: isPortrait ? size.width * 0.25 : size.width * 0.15,
+          width: isPortrait ? size.width * 0.15 : size.width * 0.09,
           height: isPortrait ? size.height * 0.2 : size.height * 0.15,
           child: Center(
               child: Text(

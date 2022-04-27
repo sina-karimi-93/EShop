@@ -6,7 +6,7 @@ is MongoDB.
 
 
 from bson import ObjectId
-from pymongo import MongoClient
+from pymongo import CursorType, MongoClient
 
 
 class Database:
@@ -146,12 +146,13 @@ class Database:
             return self.collection.delete_one(criteria)
         self.collection.delete_many(criteria)
 
-    def aggregate(self, piplines: list) -> tuple:
+    def aggregate(self, piplines: list) -> CursorType:
         """
         This method is execute aggregation framework pipelines.
         """
 
         return self.collection.aggregate(piplines)
+
 # with Database('localhost', 27017, 'eshop', 'users') as db:
 #     db: Database
 

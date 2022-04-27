@@ -73,8 +73,24 @@ class Products:
 
     def on_get_categories(self, request, response) -> None:
         """
-        This function is for a get request and returns all products
-         categories from database.
+        This function is responsible for a get request and returns all 
+        products categories from database.
+
+        For this purpose it uses aggregate framework with three stages.
+
+        products in database be like:
+            {
+                "_id": ObjectId(...),
+                "title: "Product Name",
+                .
+                .
+                . 
+
+                "categories" : ["Technology", "Laptop"]
+            }
+
+        response:
+            { "categories" : ["Technology", "Mobile", "Laptop", ...] }
         """
         with Database(SERVER, PORT, DB_NAME, 'products') as db:
             db: Database
