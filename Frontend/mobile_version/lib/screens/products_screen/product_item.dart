@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_version/Models/product.dart';
+import 'package:mobile_version/screens/product_detail_screen/product_detail_screen.dart';
+
+import '../../widgets/animated_page_route.dart';
 
 class ProductItem extends StatelessWidget {
   final Product product;
@@ -10,34 +13,45 @@ class ProductItem extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
-        child: Container(
-          color: Colors.white,
-          child: GridTile(
-            header: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 7),
-              height: 28,
-              color: Theme.of(context).colorScheme.secondary.withOpacity(0.8),
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              AnimatedPageRoute(
+                widget: ProductDetailScreen(product),
+                alignment: Alignment.bottomCenter,
+              ),
+            );
+          },
+          child: Container(
+            color: Colors.white,
+            child: GridTile(
+              header: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 7),
+                height: 28,
+                color: Theme.of(context).colorScheme.secondary.withOpacity(0.8),
+                child: Center(
+                    child: Text(
+                  "\$${product.price.toString()}",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                )),
+              ),
               child: Center(
-                  child: Text(
-                "\$${product.price.toString()}",
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                  child: Icon(
+                Icons.shopify,
+                size: 50,
+                color: Theme.of(context).colorScheme.secondary,
               )),
-            ),
-            child: Center(
-                child: Icon(
-              Icons.shopify,
-              size: 50,
-              color: Theme.of(context).colorScheme.secondary,
-            )),
-            footer: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 7),
-              height: 28,
-              color: Theme.of(context).colorScheme.secondary.withOpacity(0.8),
-              child: Center(
-                  child: Text(
-                product.title,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              )),
+              footer: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 7),
+                height: 28,
+                color: Theme.of(context).colorScheme.secondary.withOpacity(0.8),
+                child: Center(
+                    child: Text(
+                  product.title,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                )),
+              ),
             ),
           ),
         ),
