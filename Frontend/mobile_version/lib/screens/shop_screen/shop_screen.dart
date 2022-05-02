@@ -1,34 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_version/providers/products_provider.dart';
-import 'package:mobile_version/screens/products_screen/products.dart';
+import '../../providers/products_provider.dart';
+import '../../screens/shop_screen/products.dart';
 import 'package:provider/provider.dart';
 
 import 'categories.dart';
 
-class ProductsScreen extends StatefulWidget {
-  const ProductsScreen({Key? key}) : super(key: key);
+class ShopScreen extends StatefulWidget {
+  const ShopScreen({Key? key}) : super(key: key);
 
   @override
-  State<ProductsScreen> createState() => _ProductsScreenState();
+  State<ShopScreen> createState() => _ShopScreenState();
 }
 
-class _ProductsScreenState extends State<ProductsScreen> {
+class _ShopScreenState extends State<ShopScreen> {
   bool _isLoading = false;
   bool _isInit = true;
 
   Future<void> initializeData() async {
-    // if (_isInit) {
-    //   setState(() {
-    //     _isLoading = true;
-    //   });
-    Provider.of<ProductsProvider>(context)
-        .prepareProductsData()
-        .then((_) => setState(
-              () {
-                _isLoading = false;
-              },
-            ));
-    // }
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+      Provider.of<ProductsProvider>(context)
+          .prepareProductsData()
+          .then((_) => setState(
+                () {
+                  _isLoading = false;
+                },
+              ));
+    }
     _isInit = false;
   }
 

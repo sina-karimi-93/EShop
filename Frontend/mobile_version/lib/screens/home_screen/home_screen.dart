@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_version/screens/blogs_screen/blogs_screen.dart';
 import 'package:mobile_version/screens/face_recognition_screen/face_recognition_screen.dart';
-import 'package:provider/provider.dart';
-import '../../providers/products_provider.dart';
 import '../../widgets/animated_page_route.dart';
-import '../products_screen/products_screen.dart';
 
+import '../shop_screen/shop_screen.dart';
 import 'home_screen_item.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -20,7 +18,7 @@ class HomeScreen extends StatelessWidget {
           Navigator.push(
             context,
             AnimatedPageRoute(
-              widget: const ProductsScreen(),
+              widget: const ShopScreen(),
               alignment: Alignment.bottomCenter,
             ),
           );

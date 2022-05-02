@@ -32,16 +32,12 @@ class ProductItem extends StatelessWidget {
                 color: Theme.of(context).colorScheme.secondary.withOpacity(0.8),
                 child: Center(
                     child: Text(
-                  "\$${product.price.toString()}",
+                  // "\$${product.price.toString()}",
+                  "${product.images[0]}",
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 )),
               ),
-              child: Center(
-                  child: Icon(
-                Icons.shopify,
-                size: 50,
-                color: Theme.of(context).colorScheme.secondary,
-              )),
+              child: Image.asset("product.images[0]"),
               footer: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 7),
                 height: 28,

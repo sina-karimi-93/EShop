@@ -18,6 +18,15 @@ class ProductsProvider with ChangeNotifier {
   }
 
   Future<dynamic> _getDataFromServer(String path) async {
+    /*
+    This method is responsible for getting data from the server.
+    First it get data from server, and via json package, we decode
+    it to readble data like List<Map<...>> or Map<...> then return
+    it.
+
+    args:
+      path -> server url
+    */
     try {
       final url = Uri.http('10.0.2.2:8000', path);
 
@@ -25,20 +34,32 @@ class ProductsProvider with ChangeNotifier {
       var data = response.body;
       var decodedData = json.decode(data);
       return decodedData;
-    } catch (error) {}
+    } catch (error) {
+      rethrow;
+    }
   }
 
   void _prepareCategories(loadedCategories) {
+    /*
+    After getting categories from the server, we push them
+    into a list as strings.
+    */
     try {
       for (String element in loadedCategories["categories"]!) {
         _categories.add(element);
       }
+      notifyListeners();
     } catch (error) {
       rethrow;
     }
   }
 
   void _prepareProducts(var loadedProducts) {
+    /*
+    After getting products from server, it is time to
+    reshape them as a usable objects in the app. So, we
+    use Product class as a container. See ./Models/product.dart.
+    */
     for (var product in loadedProducts) {
       _products.add(
         Product(
@@ -51,19 +72,28 @@ class ProductsProvider with ChangeNotifier {
           categories: product["categories"],
           colors: product["colors"],
           sizes: product["sizes"],
+          images: product["images"],
           comments: product["sizes"],
         ),
       );
     }
+    notifyListeners();
   }
 
   Future<void> prepareProductsData() async {
+    /*
+    This method called from shop screen and get data from
+    server. For that screen we need all products and categories.
+    So, via _getDataFromServer() method we get the required data
+    and pass them to related methods to reshape them for using
+    in the app.
+    */
+
     try {
       var loadedProducts = await _getDataFromServer('/products');
       var loadedCategories = await _getDataFromServer('/products/categories');
       _prepareProducts(loadedProducts);
       _prepareCategories(loadedCategories);
-      notifyListeners();
     } catch (error) {
       rethrow;
     }

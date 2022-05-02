@@ -217,6 +217,7 @@ class Blogs:
             db: Database
 
             blogs = db.get_record(query=None, find_one=False)
+            blogs = list(blogs)
 
         APITools.check_prepare_send(response, blogs)
 

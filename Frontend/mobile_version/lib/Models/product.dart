@@ -1,5 +1,3 @@
-import 'package:flutter/widgets.dart';
-
 class Product {
   late final String id;
   late final String title;
@@ -21,6 +19,7 @@ class Product {
     required this.sizes,
     required this.colors,
     required this.categories,
+    required this.images,
     required this.comments,
   });
 }

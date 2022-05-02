@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_version/screens/shop_screen/products_category_screen.dart';
+
+import '../../widgets/animated_page_route.dart';
 
 class CategoryItem extends StatelessWidget {
   const CategoryItem({
@@ -17,7 +20,15 @@ class CategoryItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+            context,
+            AnimatedPageRoute(
+              widget: ProductsCategoryScreen(category),
+              alignment: Alignment.bottomCenter,
+            ),
+          );
+        },
         child: Container(
           decoration: BoxDecoration(
               color: Colors.white,
