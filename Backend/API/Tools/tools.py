@@ -24,7 +24,7 @@ class APITools:
     def check_prepare_send(response, data: list or dict) -> None:
         """
         This function stands for preparing and return data as a response.
-        First vai json_utils, data will be serialized as a json, then
+        First via json_utils, data will be serialized as a json, then
         through response, it will be returned.
 
         params:

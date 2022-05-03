@@ -11,6 +11,7 @@ from Database.mongo_db import Database
 from ..Tools.tools import APITools
 from bson.errors import InvalidId
 
+
 CONFIG = APITools.get_config(path="./API/Config/api_config.json")
 SERVER = CONFIG['server']
 PORT = CONFIG['port']
@@ -29,7 +30,6 @@ class Products:
 
             products = [data for data in db.get_record(
                 query=None, find_one=False)]
-
         APITools.check_prepare_send(response, products)
         print("Request has beeen answered!")
 

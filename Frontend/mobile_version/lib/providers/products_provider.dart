@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -54,6 +55,30 @@ class ProductsProvider with ChangeNotifier {
     }
   }
 
+  List<Uint8List> _convertBinariesToImages(var binaryImages) {
+    /* 
+    This method converts images from binary base64 to Uint8List. In this
+    way we can use these in Image.memory() widget to show
+    these images in the app.
+
+    args:
+        binaryImages -> List of binary base64 
+        [
+          {
+            "$binary": { "base64" : "..." }
+          }
+        ]
+    */
+
+    List<Uint8List> imagesUints = [];
+
+    for (var imageData in binaryImages) {
+      Uint8List imageUint = base64Decode(imageData['\$binary']['base64']);
+      imagesUints.add(imageUint);
+    }
+    return imagesUints;
+  }
+
   void _prepareProducts(var loadedProducts) {
     /*
     After getting products from server, it is time to
@@ -72,7 +97,7 @@ class ProductsProvider with ChangeNotifier {
           categories: product["categories"],
           colors: product["colors"],
           sizes: product["sizes"],
-          images: product["images"],
+          images: _convertBinariesToImages(product["images"]),
           comments: product["sizes"],
         ),
       );

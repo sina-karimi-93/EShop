@@ -18,6 +18,7 @@ class Products extends StatelessWidget {
       child: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: isPortrait ? 2 : 3,
+          mainAxisSpacing: 5,
         ),
         itemCount: products.length,
         itemBuilder: (context, index) {

@@ -5,6 +5,7 @@ is MongoDB.
 """
 
 
+from sys import getsizeof
 from bson import ObjectId
 from pymongo import CursorType, MongoClient
 
@@ -152,10 +153,3 @@ class Database:
         """
 
         return self.collection.aggregate(piplines)
-
-# with Database('localhost', 27017, 'eshop', 'users') as db:
-#     db: Database
-
-#     a = db.insert_record(
-#         document=[{"title": "1111chtori"}, {"title": "salammmmmm"}])
-# print(a)

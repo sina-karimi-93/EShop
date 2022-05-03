@@ -5,7 +5,6 @@ Falcon framework for API.
 
 import falcon
 from .Resources.resources import *
-
 app = application = falcon.App()
 
 # instantiate resources
