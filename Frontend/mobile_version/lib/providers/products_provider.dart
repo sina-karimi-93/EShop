@@ -93,12 +93,12 @@ class ProductsProvider with ChangeNotifier {
           description: product["description"],
           price: product["price"],
           createDate:
-              DateFormat("dd-MM-yyyy").parse(product["create_date"]["\$date"]),
+              DateFormat("yyyy-MM-dd").parse(product["create_date"]["\$date"]),
           categories: product["categories"],
           colors: product["colors"],
           sizes: product["sizes"],
           images: _convertBinariesToImages(product["images"]),
-          comments: product["sizes"],
+          comments: product["comments"],
         ),
       );
     }
@@ -122,5 +122,16 @@ class ProductsProvider with ChangeNotifier {
     } catch (error) {
       rethrow;
     }
+  }
+
+  List<Product> getSameProductsInCategory(String category) {
+    /*
+    This method return all products which they are 
+    in same desired category.
+    */
+    List<Product> sameProducts = products.where((product) {
+      return product.categories.contains(category);
+    }).toList();
+    return sameProducts;
   }
 }

@@ -43,7 +43,6 @@ class _ShopScreenState extends State<ShopScreen> {
     final Size size = MediaQuery.of(context).size;
     final bool isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
-    initializeData().then((_) {});
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: _isLoading
@@ -56,29 +55,8 @@ class _ShopScreenState extends State<ShopScreen> {
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
                 child: Column(
                   children: [
-                    Text(
-                      "Categories",
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
-                    const Divider(),
-                    Categories(
-                      isPortrait: isPortrait,
-                      size: size,
-                    ),
+                    Categories(isPortrait: isPortrait, size: size),
                     const SizedBox(height: 10),
-                    Text(
-                      "Products",
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
-                    const Divider(),
                     const Products(),
                   ],
                 ),

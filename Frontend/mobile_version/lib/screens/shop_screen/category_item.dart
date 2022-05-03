@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_version/screens/shop_screen/products_category_screen.dart';
+import 'package:mobile_version/screens/products_category_screen/products_category_screen.dart';
 
 import '../../widgets/animated_page_route.dart';
 
@@ -35,8 +35,8 @@ class CategoryItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(90),
               boxShadow: [
                 BoxShadow(
-                  color: Theme.of(context).colorScheme.secondary,
-                  blurRadius: 4,
+                  color: Colors.deepOrange.withOpacity(0.8),
+                  blurRadius: 5,
                   spreadRadius: 3,
                 )
               ]),
@@ -45,6 +45,7 @@ class CategoryItem extends StatelessWidget {
           child: Center(
               child: Text(
             category,
+            softWrap: true,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16,

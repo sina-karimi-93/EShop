@@ -21,38 +21,50 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
+      padding: const EdgeInsets.all(12.0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.deepOrange,
+              blurRadius: 3,
+              spreadRadius: 2,
+            ),
+          ],
+        ),
         child: GestureDetector(
           onTap: () => _gestureOnTap(context),
-          child: GridTile(
-            header: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 7),
-              height: 28,
-              color: Colors.black87.withOpacity(0.9),
-              child: Center(
-                  child: Text(
-                "\$${product.price}",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              )),
-            ),
-            child: Image.memory(product.images[0], fit: BoxFit.fill),
-            footer: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 7),
-              height: 28,
-              color: Colors.black87.withOpacity(0.8),
-              child: Center(
-                  child: Text(
-                product.title,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              )),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: GridTile(
+              header: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 7),
+                height: 28,
+                color: Colors.black87.withOpacity(0.9),
+                child: Center(
+                    child: Text(
+                  "\$${product.price}",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                )),
+              ),
+              child: Image.memory(product.images[0], fit: BoxFit.fill),
+              footer: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 7),
+                height: 28,
+                color: Colors.black87.withOpacity(0.8),
+                child: Center(
+                    child: Text(
+                  product.title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                )),
+              ),
             ),
           ),
         ),
