@@ -211,7 +211,11 @@ class Products:
 class Cards:
 
     def on_get_detail(self, request, response, user_id: str) -> None:
-
+        """
+        This function get the user card shop from database.
+        params:
+            user_id:str
+        """
         with Database(SERVER, PORT, DB_NAME, 'cards') as db:
             db: Database
 
