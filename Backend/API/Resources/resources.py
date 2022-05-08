@@ -178,7 +178,7 @@ class Products:
                                   }})
             # todo: add responses
 
-    def on_put_comment(self, request, response, product_id: str, comment_id: str) -> None:
+    def on_patch_comment(self, request, response, product_id: str, comment_id: str) -> None:
         """
         This function is for a update request. It is responsible for
         editing a comment on each product.

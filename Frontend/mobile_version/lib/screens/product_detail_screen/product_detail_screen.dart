@@ -29,26 +29,25 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // ======================== IMAGES =========================
               SizedBox(
                 height: size.height * 0.4,
-                child: Expanded(
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: widget.product.images.length,
-                    itemBuilder: ((context, index) {
-                      return Card(
-                        elevation: 5,
-                        child: Image.memory(
-                          widget.product.images[index],
-                          height: 100,
-                        ),
-                      );
-                    }),
-                  ),
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: widget.product.images.length,
+                  itemBuilder: ((context, index) {
+                    return Card(
+                      elevation: 5,
+                      child: Image.memory(
+                        widget.product.images[index],
+                        height: 100,
+                      ),
+                    );
+                  }),
                 ),
               ),
               const SizedBox(height: 15),
-              // TITLE and PRICE
+              // ======================== TITLE and PRICE ========================
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Row(
@@ -57,23 +56,25 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     Text(
                       widget.product.title,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24,
-                          color: Colors.black87),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                      ),
                     ),
                     Text(
                       '\$${widget.product.price}',
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
-                          color: Colors.deepOrange),
+                          color: Theme.of(context).colorScheme.primary),
                     ),
                   ],
                 ),
               ),
               const SizedBox(height: 20),
+              // ======================== SIZE ========================
               const Text(
                 'Size',
                 textAlign: TextAlign.center,
@@ -89,6 +90,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
+              // ======================== COLORS ========================
               const Text(
                 "Colors",
                 textAlign: TextAlign.center,
@@ -104,6 +106,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
+              // ======================== COMMENTS ========================
               const Padding(
                 padding: EdgeInsets.only(left: 5),
                 child: Text(

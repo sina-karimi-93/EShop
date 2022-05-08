@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
           Navigator.push(
             context,
             AnimatedPageRoute(
-              widget: const ShopScreen(),
+              widget: ShopScreen(),
               alignment: Alignment.bottomCenter,
             ),
           );

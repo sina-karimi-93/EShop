@@ -7,8 +7,8 @@ import 'package:mobile_version/Models/product.dart';
 import 'package:http/http.dart' as http;
 
 class ProductsProvider with ChangeNotifier {
-  final List<Product> _products = [];
-  final List<String> _categories = [];
+  List<Product> _products = [];
+  List<String> _categories = [];
 
   List<Product> get products {
     return [..._products];
@@ -46,6 +46,7 @@ class ProductsProvider with ChangeNotifier {
     into a list as strings.
     */
     try {
+      _categories = [];
       for (String element in loadedCategories["categories"]!) {
         _categories.add(element);
       }
@@ -85,6 +86,7 @@ class ProductsProvider with ChangeNotifier {
     reshape them as a usable objects in the app. So, we
     use Product class as a container. See ./Models/product.dart.
     */
+    _products = [];
     for (var product in loadedProducts) {
       _products.add(
         Product(

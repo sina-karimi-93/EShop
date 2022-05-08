@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = ThemeData();
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: ProductsProvider()),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../providers/products_provider.dart';
-import '../../screens/shop_screen/products.dart';
 import 'package:provider/provider.dart';
 
+import '../../providers/products_provider.dart';
+import '../../screens/shop_screen/products.dart';
 import 'categories.dart';
 
 class ShopScreen extends StatefulWidget {
@@ -14,35 +14,27 @@ class ShopScreen extends StatefulWidget {
 
 class _ShopScreenState extends State<ShopScreen> {
   bool _isLoading = false;
-  bool _isInit = true;
 
-  Future<void> initializeData() async {
-    if (_isInit) {
-      setState(() {
-        _isLoading = true;
-      });
-      Provider.of<ProductsProvider>(context)
-          .prepareProductsData()
-          .then((_) => setState(
-                () {
-                  _isLoading = false;
-                },
-              ));
-    }
-    _isInit = false;
-  }
+  // @override
+  // void initState() {
+  //   Provider.of<ProductsProvider>(context, listen: false)
+  //       .prepareProductsData()
+  //       .then((value) => {
+  //             setState((() {
+  //               _isLoading = false;
+  //             }))
+  //           });
 
-  @override
-  void didChangeDependencies() {
-    initializeData();
-    super.didChangeDependencies();
-  }
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     final bool isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
+    Provider.of<ProductsProvider>(context, listen: false).prepareProductsData();
+    print("Called");
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: _isLoading
@@ -53,12 +45,18 @@ class _ShopScreenState extends State<ShopScreen> {
           : SafeArea(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
-                child: Column(
-                  children: [
-                    Categories(isPortrait: isPortrait, size: size),
-                    const SizedBox(height: 10),
-                    const Products(),
-                  ],
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    Provider.of<ProductsProvider>(context, listen: false)
+                        .prepareProductsData();
+                  },
+                  child: Column(
+                    children: [
+                      Categories(isPortrait: isPortrait, size: size),
+                      const SizedBox(height: 10),
+                      const Products(),
+                    ],
+                  ),
                 ),
               ),
             ),
