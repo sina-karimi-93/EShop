@@ -25,7 +25,7 @@ class ProductCategoryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
       child: Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(50),

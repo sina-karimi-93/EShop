@@ -159,7 +159,9 @@ class Products:
         user_id = ObjectId(data["user_id"])
         product_id = ObjectId(product_id)
         comment_id = ObjectId(comment_id)
+
         with Database(SERVER, PORT, DB_NAME, 'products') as db:
+
             comment = db.get_record(query={"_id": product_id},
                                     projection={"comments": {
                                         "$elemMatch": {"id": comment_id}}},
@@ -184,11 +186,13 @@ class Products:
         the user id is match with comment owner or not. If yes it will
         edit the comment, and if not it will response error.
         """
+
         data = APITools.prepare_header_data(request)
         user_id = ObjectId(data["user_id"])
         updated_message = data["message"]
         product_id = ObjectId(product_id)
         comment_id = ObjectId(comment_id)
+
         with Database(SERVER, PORT, DB_NAME, 'products') as db:
             db: Database
             comment = db.get_record(query={"_id": product_id},
@@ -199,10 +203,24 @@ class Products:
 
             comment_user_id = comment["owner"]
             if comment_user_id == user_id:
-                db.collection.find_one_and_update
                 db.update_record(criteria={"_id": product_id, "comments.id": comment_id},
                                  document={"$set": {"comments.$.message": updated_message}})
             # todo: add responses
+
+
+class Cards:
+
+    def on_get_detail(self, request, response, user_id: str) -> None:
+
+        with Database(SERVER, PORT, DB_NAME, 'cards') as db:
+            db: Database
+
+            card = db.get_record(
+                {
+                    "owner": ObjectId(user_id)
+                }
+            )
+        APITools.check_prepare_send(response=response, data=card)
 
 
 class Blogs:

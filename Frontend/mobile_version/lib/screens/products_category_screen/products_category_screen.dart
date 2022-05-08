@@ -19,16 +19,13 @@ class ProductsCategoryScreen extends StatelessWidget {
         centerTitle: true,
         title: Text(categoryName),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: ListView.builder(
-            itemCount: products.length,
-            itemBuilder: ((context, index) {
-              return ProductCategoryItem(
-                product: products[index],
-              );
-            })),
-      ),
+      body: ListView.builder(
+          itemCount: products.length,
+          itemBuilder: ((context, index) {
+            return ProductCategoryItem(
+              product: products[index],
+            );
+          })),
     );
   }
 }
