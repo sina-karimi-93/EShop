@@ -11,10 +11,13 @@ class ProductDetailScreen extends StatefulWidget {
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  var sizeDropDownValue;
+  var colorDropDownValue;
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.primary,
       appBar: AppBar(
         centerTitle: true,
         title: Text(widget.product.title),
@@ -56,8 +59,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     Text(
                       widget.product.title,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
+                      style: const TextStyle(
+                        color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
                       ),
@@ -65,46 +68,102 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     Text(
                       '\$${widget.product.price}',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Theme.of(context).colorScheme.primary),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
                     ),
                   ],
                 ),
               ),
               const SizedBox(height: 20),
-              // ======================== SIZE ========================
-              const Text(
-                'Size',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    color: Colors.orange),
+              // ======================== SIZE AND COLOR ========================
+              Row(
+                mainAxisAlignment: widget.product.sizes.isNotEmpty
+                    ? MainAxisAlignment.spaceBetween
+                    : MainAxisAlignment.end,
+                children: [
+                  if (widget.product.sizes.isNotEmpty)
+                    Row(
+                      children: [
+                        const Text("Size ",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            )),
+                        const SizedBox(width: 10),
+                        DropdownButton<String>(
+                          dropdownColor: Theme.of(context).colorScheme.primary,
+                          iconEnabledColor:
+                              Theme.of(context).colorScheme.secondary,
+                          value: sizeDropDownValue,
+                          items: widget.product.sizes
+                              .map<DropdownMenuItem<String>>((var size) {
+                            return DropdownMenuItem<String>(
+                              value: size,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  size,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              sizeDropDownValue = value!;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  if (widget.product.colors.isNotEmpty)
+                    Row(
+                      children: [
+                        DropdownButton<String>(
+                          dropdownColor: Theme.of(context).colorScheme.primary,
+                          iconEnabledColor:
+                              Theme.of(context).colorScheme.secondary,
+                          value: colorDropDownValue,
+                          items: widget.product.colors
+                              .map<DropdownMenuItem<String>>((var size) {
+                            return DropdownMenuItem<String>(
+                              value: size,
+                              child: Text(
+                                size,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              colorDropDownValue = value!;
+                            });
+                          },
+                        ),
+                        const SizedBox(width: 10),
+                        const Text(
+                          " Color",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        )
+                      ],
+                    ),
+                ],
               ),
-              const SizedBox(height: 10),
-              Text(
-                widget.product.sizes.join(", "),
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
-              // ======================== COLORS ========================
-              const Text(
-                "Colors",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    color: Colors.orange),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                widget.product.colors.join(', '),
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
+
               const SizedBox(height: 20),
               // ======================== COMMENTS ========================
               const Padding(
@@ -121,24 +180,32 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               SizedBox(
                 height: 500,
                 child: ListView.builder(
-                    itemCount: widget.product.comments.length,
-                    itemBuilder: (ctx, index) {
-                      return Card(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 8),
-                        child: ListTile(
-                          leading: const Icon(
-                            Icons.person,
-                            color: Colors.green,
-                          ),
-                          title:
-                              Text(widget.product.comments[index]["message"]),
-                          subtitle: Text(DateFormat.yMMMd().format(
-                              DateFormat("yyyy-MM-dd").parse(widget.product
-                                  .comments[index]["create_date"]["\$date"]))),
+                  itemCount: widget.product.comments.length,
+                  itemBuilder: (ctx, index) {
+                    return Card(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 8),
+                      child: ListTile(
+                        leading: Icon(
+                          Icons.person,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
-                      );
-                    }),
+                        title: Text(widget.product.comments[index]["message"]),
+                        subtitle: Text(
+                          DateFormat.yMMMd().format(
+                            DateFormat("yyyy-MM-dd").parse(widget.product
+                                .comments[index]["create_date"]["\$date"]),
+                          ),
+                        ),
+                        trailing: IconButton(
+                          icon: Icon(Icons.edit,
+                              color: Theme.of(context).colorScheme.secondary),
+                          onPressed: () {},
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),
