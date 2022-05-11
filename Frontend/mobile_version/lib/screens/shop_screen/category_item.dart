@@ -29,29 +29,35 @@ class CategoryItem extends StatelessWidget {
             ),
           );
         },
-        child: Container(
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(90),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.deepOrange.withOpacity(0.8),
-                  blurRadius: 5,
-                  spreadRadius: 3,
-                )
-              ]),
-          width: isPortrait ? size.width * 0.15 : size.width * 0.09,
-          height: isPortrait ? size.height * 0.2 : size.height * 0.15,
-          child: Center(
-              child: Text(
-            category,
-            softWrap: true,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-              color: Colors.black87,
-            ),
-          )),
+        child: CircleAvatar(
+          maxRadius: isPortrait ? size.width * 0.08 : size.width * 0.04,
+          child: Container(
+            decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.secondary,
+                borderRadius: BorderRadius.circular(90),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black87,
+                    blurRadius: 5,
+                    spreadRadius: 3,
+                  ),
+                  BoxShadow(
+                    color: Colors.white,
+                    blurRadius: 5,
+                    spreadRadius: 3,
+                  ),
+                ]),
+            child: Center(
+                child: Text(
+              category,
+              softWrap: true,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Colors.white,
+              ),
+            )),
+          ),
         ),
       ),
     );

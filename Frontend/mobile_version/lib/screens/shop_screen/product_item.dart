@@ -44,7 +44,7 @@ class ProductItem extends StatelessWidget {
                 color: Colors.black87.withOpacity(0.9),
                 child: Center(
                     child: Text(
-                  "\$${product.price}",
+                  product.title,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.secondary,
@@ -58,7 +58,7 @@ class ProductItem extends StatelessWidget {
                 color: Colors.black87.withOpacity(0.8),
                 child: Center(
                     child: Text(
-                  product.title,
+                  "\$${product.price}",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.secondary,
