@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_version/Models/product.dart';
@@ -13,10 +15,80 @@ class ProductDetailScreen extends StatefulWidget {
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   var sizeDropDownValue;
   var colorDropDownValue;
+  final _commentController = TextEditingController();
+
+  void _addCommentHandler() {
+    /* This method gets the value of the textfield in modalbottomsheet
+     and submit it to the comments of the products.*/
+    String newComment = _commentController.text;
+    print(newComment);
+    Navigator.of(context).pop();
+  }
+
+  void _addCommentModal() {
+    /*
+    This method open a modalbottomsheet to user add a new comment for this product.
+    */
+    showModalBottomSheet(
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(50.0))),
+        context: context,
+        builder: (ctx) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 10),
+                const Center(
+                    child: Text(
+                  "Please write your comment",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                )),
+                const SizedBox(height: 15),
+                TextFormField(
+                  controller: _commentController,
+                  maxLines: 3,
+                  decoration: InputDecoration(
+                    focusColor: Colors.red,
+                    fillColor: Colors.red,
+                    hoverColor: Colors.red,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: const BorderSide(color: Colors.red),
+                    ),
+                    label: const Text('Comment'),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Padding(
+                  padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom) *
+                      1.1,
+                  child: ElevatedButton(
+                    onPressed: _addCommentHandler,
+                    child: const Text("Submit"),
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.red),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
+    bool hasComments = widget.product.comments.isNotEmpty;
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: Theme.of(context).colorScheme.primary,
       appBar: AppBar(
         centerTitle: true,
@@ -106,10 +178,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   size,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
+                                    color: Colors.white,
                                   ),
                                 ),
                               ),
@@ -137,10 +208,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               value: size,
                               child: Text(
                                 size,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
+                                  color: Colors.white,
                                 ),
                               ),
                             );
@@ -166,47 +236,69 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
               const SizedBox(height: 20),
               // ======================== COMMENTS ========================
-              const Padding(
-                padding: EdgeInsets.only(left: 5),
+              Padding(
+                padding: const EdgeInsets.only(left: 5),
                 child: Text(
                   "Comments",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
-                      color: Colors.green),
+                      color: Theme.of(context).colorScheme.secondary),
                 ),
               ),
               const SizedBox(height: 10),
-              SizedBox(
-                height: 500,
-                child: ListView.builder(
-                  itemCount: widget.product.comments.length,
-                  itemBuilder: (ctx, index) {
-                    return Card(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 8),
-                      child: ListTile(
-                        leading: Icon(
-                          Icons.person,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                        title: Text(widget.product.comments[index]["message"]),
-                        subtitle: Text(
-                          DateFormat.yMMMd().format(
-                            DateFormat("yyyy-MM-dd").parse(widget.product
-                                .comments[index]["create_date"]["\$date"]),
-                          ),
-                        ),
-                        trailing: IconButton(
-                          icon: Icon(Icons.edit,
-                              color: Theme.of(context).colorScheme.secondary),
-                          onPressed: () {},
-                        ),
-                      ),
-                    );
-                  },
+              ElevatedButton(
+                onPressed: () => _addCommentModal(),
+                child: const Text("Add new comment!"),
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.deepOrange),
                 ),
               ),
+              const SizedBox(height: 10),
+              !hasComments
+                  ? const SizedBox(
+                      height: 50,
+                      child: Center(
+                          child: Text(
+                        "There is not any comments!",
+                        style: TextStyle(color: Colors.white),
+                      )),
+                    )
+                  : SizedBox(
+                      height: 500,
+                      child: ListView.builder(
+                        itemCount: widget.product.comments.length,
+                        itemBuilder: (ctx, index) {
+                          return Card(
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 8),
+                            child: ListTile(
+                              leading: Icon(
+                                Icons.person,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                              title: Text(
+                                  widget.product.comments[index]["message"]),
+                              subtitle: Text(
+                                DateFormat.yMMMd().format(
+                                  DateFormat("yyyy-MM-dd").parse(
+                                      widget.product.comments[index]
+                                          ["create_date"]["\$date"]),
+                                ),
+                              ),
+                              trailing: IconButton(
+                                icon: Icon(Icons.edit,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .secondary),
+                                onPressed: () {},
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
             ],
           ),
         ),

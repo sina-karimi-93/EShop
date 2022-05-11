@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         theme: theme.copyWith(
           colorScheme: theme.colorScheme.copyWith(
             primary: const Color.fromRGBO(20, 35, 51, 1),
-            secondary: const Color.fromRGBO(230, 120, 0, 1),
+            secondary: Colors.deepOrange,
           ),
         ),
         home: const WelcomeScreen(),

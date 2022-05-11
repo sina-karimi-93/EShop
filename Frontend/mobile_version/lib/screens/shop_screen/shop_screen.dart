@@ -7,7 +7,6 @@ import 'categories.dart';
 
 class ShopScreen extends StatefulWidget {
   const ShopScreen({Key? key}) : super(key: key);
-
   @override
   State<ShopScreen> createState() => _ShopScreenState();
 }
@@ -33,7 +32,7 @@ class _ShopScreenState extends State<ShopScreen> {
     final Size size = MediaQuery.of(context).size;
     final bool isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
-    Provider.of<ProductsProvider>(context, listen: false).prepareProductsData();
+    // Provider.of<ProductsProvider>(context, listen: false).prepareProductsData();
     print("Called");
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
