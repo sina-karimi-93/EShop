@@ -32,8 +32,7 @@ class _ShopScreenState extends State<ShopScreen> {
     final Size size = MediaQuery.of(context).size;
     final bool isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
-    // Provider.of<ProductsProvider>(context, listen: false).prepareProductsData();
-    print("Called");
+    Provider.of<ProductsProvider>(context, listen: false).prepareProductsData();
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: _isLoading

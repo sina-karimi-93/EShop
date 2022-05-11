@@ -29,7 +29,7 @@ class ProductsProvider with ChangeNotifier {
       path -> server url
     */
     try {
-      final url = Uri.http('10.0.2.2:8000', path);
+      final url = Uri.http('192.168.1.104:8000', path);
 
       var response = await http.get(url);
       var data = response.body;
