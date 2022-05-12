@@ -30,7 +30,7 @@ class CategoryItem extends StatelessWidget {
           );
         },
         child: CircleAvatar(
-          maxRadius: isPortrait ? size.width * 0.085 : size.width * 0.04,
+          maxRadius: isPortrait ? size.width * 0.085 : size.width * 0.06,
           child: Container(
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.secondary,

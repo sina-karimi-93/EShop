@@ -10,7 +10,7 @@ app = application = falcon.App()
 # instantiate resources
 
 products = Products()
-cards = Cards()
+carts = Carts()
 users = Users()
 blogs = Blogs()
 admin = Admin()
@@ -28,7 +28,7 @@ app.add_route('/products/categories/{category_name}',
               products, suffix='category_products')
 
 #  ================================================ Cards =====================================================
-app.add_route('/cards/{user_id}', cards, suffix="detail")
+app.add_route('/carts/{user_id}', carts, suffix="detail")
 
 #  ================================================ Blogs =====================================================
 app.add_route('/blogs', blogs)
@@ -36,8 +36,9 @@ app.add_route('/blogs/{blog_id}', blogs, suffix='detail')
 
 #  ================================================ Users =====================================================
 
-app.add_route('/users', users)
-app.add_route('/users/{user_id}', users, suffix='detail')
+app.add_route('/users/login', users, suffix='login')
+app.add_route('/users/signup', users, suffix='signup')
+app.add_route('/users/edit', users, suffix='edit')
 
 #  ================================================ Admin =====================================================
 app.add_route('/admin', admin)

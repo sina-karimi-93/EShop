@@ -1,7 +1,10 @@
+from curses import has_il
+from datetime import datetime
 import json
-from pprint import pprint
 import falcon
+import bcrypt
 from bson import json_util
+from pprint import pprint
 
 
 class APITools:
@@ -67,3 +70,28 @@ class APITools:
             }
             return response
         return str(ids)
+
+    @staticmethod
+    def encode_password(password: str) -> str:
+        """
+        This function hash passwords and return them as string to 
+        store them in database.
+        """
+
+        hashed_password = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+        return hashed_password.decode()
+
+    def check_password(password: str, encoded_password: str) -> bool:
+        """
+        This method check whether a password is match to existing or not.
+
+        args:
+            password -> input password from client
+            encoded_password -> existing password in database
+        """
+
+        is_match = bcrypt.checkpw(password.encode(), encoded_password.encode())
+        return is_match
+
+
+

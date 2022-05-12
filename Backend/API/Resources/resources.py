@@ -73,7 +73,7 @@ class Products:
 
     def on_get_categories(self, request, response) -> None:
         """
-        This function is responsible for a get request and returns all 
+        This function is responsible for a get request and returns all
         products categories from database.
 
         For this purpose it uses aggregate framework with three stages.
@@ -84,7 +84,7 @@ class Products:
                 "title: "Product Name",
                 .
                 .
-                . 
+                .
 
                 "categories" : ["Technology", "Laptop"]
             }
@@ -208,7 +208,7 @@ class Products:
             # todo: add responses
 
 
-class Cards:
+class Carts:
 
     def on_get_detail(self, request, response, user_id: str) -> None:
         """
@@ -216,15 +216,39 @@ class Cards:
         params:
             user_id:str
         """
-        with Database(SERVER, PORT, DB_NAME, 'cards') as db:
+        with Database(SERVER, PORT, DB_NAME, 'carts') as db:
             db: Database
 
-            card = db.get_record(
+            cart = db.get_record(
                 {
                     "owner": ObjectId(user_id)
                 }
             )
-        APITools.check_prepare_send(response=response, data=card)
+        APITools.check_prepare_send(response=response, data=cart)
+
+    def on_patch_detail(self, request, response, user_id: str) -> None:
+        """
+        This method updates a single cart which related to a
+        autheticated user(in front-end).
+        """
+
+        data = APITools.prepare_header_data(request)
+        with Database(SERVER, PORT, DB_NAME, 'carts') as db:
+            db: Database
+            db.replace_record(
+                criteria={'owner': ObjectId(user_id)},
+                document=data,
+            )
+
+    def on_delete_detail(self, request, response, user_id: str) -> None:
+        """
+        This function is for a delete request. It is responsible for
+        deleting a cart.
+        """
+        with Database(SERVER, PORT, DB_NAME, 'carts') as db:
+            db: Database
+
+            db.delete_record({"owner": ObjectId(user_id)}, delete_one=True)
 
 
 class Blogs:
@@ -266,14 +290,56 @@ class Blogs:
 
 class Users:
 
-    def on_get(self, request, response) -> None:
+    def on_post_login(self, request, response) -> None:
         """"""
+        auth_data = APITools.prepare_header_data(request)
+        with Database(SERVER, PORT, DB_NAME, 'users') as db:
+            db: Database
 
-    def on_get_detail(self, request, response, user_id) -> None:
-        """"""
+            user = db.get_record(
+                {"username": auth_data["username"]}, find_one=True)
+        is_auth = APITools.check_password(
+            password=auth_data["password"],
+            encoded_password=user["password"]
+        )
 
-    def on_post(self, request, response) -> None:
-        """"""
+        response.media = {"is_auth": is_auth}
+
+    def on_post_signup(self, request, response) -> None:
+        """
+        This function get the data from body and add new user.
+        """
+
+        user_data = APITools.prepare_header_data(request)
+        user_data["create_data"] = datetime.now()
+        user_data["password"] = APITools.encode_password(user_data['password'])
+
+        with Database(SERVER, PORT, DB_NAME, 'users') as db:
+            db: Database
+            user = db.get_record({"username": user_data["username"]})
+            if user is None:
+                new_user = db.insert_record(user_data)
+                APITools.check_prepare_send(response, new_user)
+                return
+            response.media = {"error": "This username is currently exists!"}
+
+    def on_patch_edit(self, request, response) -> None:
+        """
+        This method updates the user info.
+        """
+        user_data = APITools.prepare_header_data(request)
+        username = user_data["username"]
+        try:
+            updated_fields = user_data["updated_fields"]
+        except KeyError as e:
+            response.media = {"error": "Invalid Key!"}
+            return
+        with Database(SERVER, PORT, DB_NAME, 'users') as db:
+            db: Database
+
+            db.update_record({"username": username}, {
+                "$set": updated_fields})
+        response.media = falcon.HTTP_200
 
 
 class Admin:

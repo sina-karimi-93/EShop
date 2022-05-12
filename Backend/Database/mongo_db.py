@@ -130,8 +130,24 @@ class Database:
 
         if update_one:
             return self.collection.update_one(filter=criteria, update=document)
-
         return self.collection.update_many(filter=criteria, update=document)
+
+    def replace_record(self, criteria: dict, document: dict) -> None:
+        """
+        This method is stands for update operation in CRUD.
+        First it gets the collection name and based on the updating type(one or many), 
+        it collect the data.
+
+        params:
+            collection_name:str
+            query:dict
+            find_one:bool
+
+        return:
+            dict or tuple
+        """
+
+        return self.collection.replace_one(filter=criteria, replacement=document)
 
     def delete_record(self, criteria: dict, delete_one: bool = True) -> None:
         """
