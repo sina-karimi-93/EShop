@@ -7,6 +7,8 @@ import 'categories.dart';
 import '../../widgets/shop_app_drawer.dart';
 
 class ShopScreen extends StatefulWidget {
+  static const routeName = './shop_screen';
+
   const ShopScreen({Key? key}) : super(key: key);
   @override
   State<ShopScreen> createState() => _ShopScreenState();

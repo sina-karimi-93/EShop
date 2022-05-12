@@ -8,7 +8,7 @@ import 'home_screen_item.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
-
+  static const routeName = './';
   List<Widget> homeScreenWidgets(context) {
     return [
       HomeScreenItem(
@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
           Navigator.push(
             context,
             AnimatedPageRoute(
-              widget: ShopScreen(),
+              widget: const ShopScreen(),
               alignment: Alignment.bottomCenter,
             ),
           );

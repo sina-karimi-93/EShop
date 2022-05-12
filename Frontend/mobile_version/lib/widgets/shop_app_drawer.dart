@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_version/Constants/icons.dart';
+import 'package:mobile_version/screens/cart_screen.dart/cart_screen.dart';
+import 'package:mobile_version/screens/home_screen/home_screen.dart';
+import 'package:mobile_version/screens/shop_screen/shop_screen.dart';
 
 class ShopAppDrawer extends StatelessWidget {
   final Size size;
@@ -25,35 +28,42 @@ class ShopAppDrawer extends StatelessWidget {
             ),
       child: Drawer(
         backgroundColor: Colors.white,
-        child: Container(
-          child: Column(
-            children: [
-              CustomDrawerHeader(),
-              Expanded(
-                child: Container(
-                  color: Theme.of(context).colorScheme.primary,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          child: const DrawerItems(
-                            title: "Home",
-                            icon: Icons.home,
-                          ),
-                          onTap: () => Navigator.of(context).pop(),
+        child: Column(
+          children: [
+            const CustomDrawerHeader(),
+            Expanded(
+              child: Container(
+                color: Theme.of(context).colorScheme.primary,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                        child: const DrawerItems(
+                          title: "Home",
+                          icon: Icons.home,
                         ),
-                        const Divider(),
-                        const DrawerItems(title: "Shop", icon: shopping_cart),
-                        const DrawerItems(title: "Card", icon: Icons.shopify),
-                        const DrawerItems(
-                            title: "Orders", icon: Icons.monetization_on_sharp),
-                      ],
-                    ),
+                        onTap: () => Navigator.of(context)
+                            .pushNamed(HomeScreen.routeName),
+                      ),
+                      const Divider(),
+                      GestureDetector(
+                          onTap: () => Navigator.of(context)
+                              .pushNamed(ShopScreen.routeName),
+                          child: const DrawerItems(
+                              title: "Shop", icon: shopping_cart)),
+                      GestureDetector(
+                          onTap: () => Navigator.of(context)
+                              .pushNamed(CartScreen.routeName),
+                          child: const DrawerItems(
+                              title: "Carts", icon: Icons.shopify)),
+                      const DrawerItems(
+                          title: "Orders", icon: Icons.monetization_on_sharp),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

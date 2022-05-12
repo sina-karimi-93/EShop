@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_version/screens/home_screen/home_screen.dart';
 import 'package:provider/provider.dart';
 // Screens
-import './screens/welcome_screen/welcome_screen.dart';
+// import './screens/welcome_screen/welcome_screen.dart';
+import 'package:mobile_version/screens/home_screen/home_screen.dart';
+import './screens/cart_screen.dart/cart_screen.dart';
+import 'package:mobile_version/screens/shop_screen/shop_screen.dart';
 // Providers
 import './providers/products_provider.dart';
 
@@ -30,7 +32,12 @@ class MyApp extends StatelessWidget {
             secondary: Colors.deepOrange,
           ),
         ),
-        home: const HomeScreen(),
+        initialRoute: HomeScreen.routeName,
+        routes: {
+          HomeScreen.routeName: (context) => const HomeScreen(),
+          ShopScreen.routeName: (context) => const ShopScreen(),
+          CartScreen.routeName: (context) => const CartScreen()
+        },
       ),
     );
   }
