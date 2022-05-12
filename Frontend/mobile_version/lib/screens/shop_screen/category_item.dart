@@ -30,23 +30,24 @@ class CategoryItem extends StatelessWidget {
           );
         },
         child: CircleAvatar(
-          maxRadius: isPortrait ? size.width * 0.08 : size.width * 0.04,
+          maxRadius: isPortrait ? size.width * 0.085 : size.width * 0.04,
           child: Container(
             decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.secondary,
-                borderRadius: BorderRadius.circular(90),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.black87,
-                    blurRadius: 5,
-                    spreadRadius: 3,
-                  ),
-                  BoxShadow(
-                    color: Colors.white,
-                    blurRadius: 5,
-                    spreadRadius: 3,
-                  ),
-                ]),
+              color: Theme.of(context).colorScheme.secondary,
+              borderRadius: BorderRadius.circular(90),
+              // boxShadow: const [
+              //   BoxShadow(
+              //     color: Colors.black87,
+              //     blurRadius: 5,
+              //     spreadRadius: 3,
+              //   ),
+              //   BoxShadow(
+              //     color: Colors.white,
+              //     blurRadius: 1,
+              //     spreadRadius: 2,
+              //   ),
+              // ],
+            ),
             child: Center(
                 child: Text(
               category,

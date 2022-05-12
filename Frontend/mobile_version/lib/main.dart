@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_version/screens/home_screen/home_screen.dart';
 import 'package:provider/provider.dart';
 // Screens
 import './screens/welcome_screen/welcome_screen.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
             secondary: Colors.deepOrange,
           ),
         ),
-        home: const WelcomeScreen(),
+        home: const HomeScreen(),
       ),
     );
   }

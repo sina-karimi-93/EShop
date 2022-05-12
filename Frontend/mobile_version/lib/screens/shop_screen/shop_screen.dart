@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../providers/products_provider.dart';
 import '../../screens/shop_screen/products.dart';
 import 'categories.dart';
+import '../../widgets/shop_app_drawer.dart';
 
 class ShopScreen extends StatefulWidget {
   const ShopScreen({Key? key}) : super(key: key);
@@ -35,6 +36,12 @@ class _ShopScreenState extends State<ShopScreen> {
     Provider.of<ProductsProvider>(context, listen: false).prepareProductsData();
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
+      drawer: ShopAppDrawer(size: size, isPortrait: isPortrait),
+      appBar: AppBar(
+        elevation: 0,
+        title: const Text('Products'),
+        centerTitle: true,
+      ),
       body: _isLoading
           ? Center(
               child: CircularProgressIndicator(

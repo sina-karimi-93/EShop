@@ -24,11 +24,11 @@ class ProductDetailImages extends StatelessWidget {
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primary,
               borderRadius: BorderRadius.circular(15),
-              boxShadow: const [
+              boxShadow: [
                 BoxShadow(
                   spreadRadius: 2,
                   blurRadius: 3,
-                  color: Colors.red,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ],
             ),

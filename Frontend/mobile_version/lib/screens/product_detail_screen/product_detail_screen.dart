@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_version/Models/product.dart';
+import 'package:mobile_version/providers/products_provider.dart';
+import 'package:provider/provider.dart';
 import '../../Constants/colors.dart';
 import '../../Constants/icons.dart';
 import './product_detail_images.dart';
@@ -29,10 +31,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     final Size size = MediaQuery.of(context).size;
     final bool isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Theme.of(context).colorScheme.primary,
       appBar: AppBar(
+        elevation: 0,
         centerTitle: true,
         title: Text(widget.product.title),
         actions: const [
@@ -77,7 +81,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     if (widget.product.sizes.isNotEmpty)
                       Row(
                         children: [
-                          const Text("Size     ",
+                          const Text("Sizes   ",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
@@ -273,7 +277,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       ),
                     ),
             ],
-            // ======================== RELATED PRODUCTS ========================
           ),
         ),
       ),
@@ -284,6 +287,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     );
   }
 
+// =============================== METHODS ====================================
+// =============================== METHODS ====================================
+// =============================== METHODS ====================================
+// =============================== METHODS ====================================
+// =============================== METHODS ====================================
+// =============================== METHODS ====================================
+// =============================== METHODS ====================================
+// =============================== METHODS ====================================
+// =============================== METHODS ====================================
   void _removeComment(Map<String, dynamic> comment) {
     /*
     This method is responsible for removing a comment.
