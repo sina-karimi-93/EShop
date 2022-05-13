@@ -291,22 +291,31 @@ class Blogs:
 class Users:
 
     def on_post_login(self, request, response) -> None:
-        """"""
+        """
+        This method is responsible for check the user credential.
+        1- it gets user credential data from header
+        2 - checks whether this user exists or not
+        3 - check the password is correct or not
+        4 - return the user
+        5 - if didn't pass the previous stages, return error
+        """
         auth_data = APITools.prepare_header_data(request)
         with Database(SERVER, PORT, DB_NAME, 'users') as db:
             db: Database
-
             user = db.get_record(
-                {"username": auth_data["username"]}, find_one=True)
+                {"username": auth_data["username"]},
+                find_one=True,
+            )
         if user:
             is_auth = APITools.check_password(
                 password=auth_data["password"],
                 encoded_password=user["password"]
             )
-
-            response.media = {"is_auth": is_auth}
+            if is_auth:
+                user = APITools.prepare_header_data(user)
+                response.media = {"user": user}
             return
-        response.media = {"error": "Invalid username!"}
+        response.media = {"error": "Invalid username or password!"}
 
     def on_post_signup(self, request, response) -> None:
         """
