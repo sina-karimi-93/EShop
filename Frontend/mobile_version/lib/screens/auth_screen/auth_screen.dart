@@ -18,6 +18,8 @@ class _AuthScreenState extends State<AuthScreen> {
   final _passwordController = TextEditingController();
   final _password2Controller = TextEditingController();
   bool _isLoginMode = true;
+  final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _signupFormKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -80,13 +82,21 @@ class _AuthScreenState extends State<AuthScreen> {
         SizedBox(
           height: isPortrait ? null : size.height * 0.4,
           child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-                // ========================= Username =========================
-                Transform.rotate(
-                  angle: 0.1,
-                  child: TextFormField(
+            child: Form(
+              key: _loginFormKey,
+              child: Column(
+                children: [
+                  const SizedBox(height: 20),
+                  // ========================= Username =========================
+                  TextFormField(
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Username is required!";
+                      } else if (value.length < 4) {
+                        return "Username should be at least 4 charracter";
+                      }
+                      return null;
+                    },
                     controller: _usernameController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -95,23 +105,31 @@ class _AuthScreenState extends State<AuthScreen> {
                       label: const Text('Username'),
                     ),
                   ),
-                ),
-                const SizedBox(height: 35),
-                // ========================= Password =========================
-                TextFormField(
-                  obscureText: true,
-                  enableSuggestions: false,
-                  autocorrect: false,
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
+                  const SizedBox(height: 35),
+                  // ========================= Password =========================
+                  TextFormField(
+                    obscureText: true,
+                    enableSuggestions: false,
+                    autocorrect: false,
+                    controller: _passwordController,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Password is required!";
+                      } else if (value.length < 4) {
+                        return "Password should be at least 4 charracters";
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      label: const Text("Password"),
                     ),
-                    label: const Text("Password"),
                   ),
-                ),
-                const SizedBox(height: 35),
-              ],
+                  const SizedBox(height: 35),
+                ],
+              ),
             ),
           ),
         ),
@@ -148,14 +166,22 @@ class _AuthScreenState extends State<AuthScreen> {
         SizedBox(
           height: !_isLoginMode ? size.height * 0.33 : null,
           child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-                // ========================= Username =========================
-                Transform.rotate(
-                  angle: -0.1,
-                  child: TextFormField(
+            child: Form(
+              key: _signupFormKey,
+              child: Column(
+                children: [
+                  const SizedBox(height: 20),
+                  // ========================= Username =========================
+                  TextFormField(
                     controller: _usernameController,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Username is required!";
+                      } else if (value.length < 4) {
+                        return "Username should be at least 4 charracter";
+                      }
+                      return null;
+                    },
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
@@ -163,54 +189,79 @@ class _AuthScreenState extends State<AuthScreen> {
                       label: const Text('Username'),
                     ),
                   ),
-                ),
-                const SizedBox(height: 35),
-                // ========================= Email =========================
-                TextFormField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
+
+                  const SizedBox(height: 35),
+                  // ========================= Email =========================
+                  TextFormField(
+                    controller: _emailController,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "E-mail is required!";
+                      } else if (!value.contains("@") || !value.contains(".")) {
+                        return "Invalid email address";
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      label: const Text('E-mail'),
                     ),
-                    label: const Text('E-mail'),
                   ),
-                ),
-                const SizedBox(height: 35),
-                // ========================= Password =========================
-                TextFormField(
-                  obscureText: true,
-                  enableSuggestions: false,
-                  autocorrect: false,
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
+                  const SizedBox(height: 35),
+                  // ========================= Password =========================
+                  TextFormField(
+                    obscureText: true,
+                    enableSuggestions: false,
+                    autocorrect: false,
+                    controller: _passwordController,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Password is required!";
+                      } else if (value.length < 4) {
+                        return "Password should be at least 4 charracters";
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      label: const Text("Password"),
                     ),
-                    label: const Text("Password"),
                   ),
-                ),
-                const SizedBox(height: 35),
-                // ========================= Password2 =========================
-                TextFormField(
-                  obscureText: true,
-                  enableSuggestions: false,
-                  autocorrect: false,
-                  controller: _password2Controller,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
+                  const SizedBox(height: 35),
+                  // ========================= Password2 =========================
+                  TextFormField(
+                    obscureText: true,
+                    enableSuggestions: false,
+                    autocorrect: false,
+                    controller: _password2Controller,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Password is required!";
+                      } else if (value.length < 4) {
+                        return "Password should be at least 4 charracters";
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      label: const Text("Re-enter password"),
                     ),
-                    label: const Text("Re-enter password"),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
         const SizedBox(height: 35),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: signup,
           child: const Text(
             "Signup",
             style: TextStyle(
@@ -238,24 +289,80 @@ class _AuthScreenState extends State<AuthScreen> {
   void login(userDataProvider) async {
     String username = _usernameController.value.text;
     String password = _passwordController.value.text;
-    bool result = await Provider.of<UserProvider>(context, listen: false)
-        .loginUser(username: username, password: password);
-    if (result) {
-      Navigator.of(context).pushNamed(HomeScreen.routeName);
-    } else {
-      showDialog(
-          context: context,
-          builder: (ctx) => AlertDialog(
-                title: const Text("Error"),
-                content: Text("Invalid username or password!"),
-                actions: [
-                  TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: Text("Ok"))
-                ],
-              ));
+    final form = _loginFormKey.currentState;
+    if (form!.validate()) {
+      bool result = await Provider.of<UserProvider>(context, listen: false)
+          .loginUser(username: username, password: password);
+      if (result) {
+        Navigator.of(context).pushNamed(HomeScreen.routeName);
+      } else {
+        showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+                  title: const Text("Error"),
+                  content: const Text("Invalid username or password!"),
+                  actions: [
+                    TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text("Ok"))
+                  ],
+                ));
+      }
     }
   }
 
-  void signup() {}
+  void signup() async {
+    final form = _signupFormKey.currentState;
+    if (form!.validate()) {
+      var username = _usernameController.value.text;
+      var email = _emailController.value.text;
+      var password = _passwordController.value.text;
+      var password2 = _password2Controller.value.text;
+      if (password == password2) {
+        bool result = await Provider.of<UserProvider>(context, listen: false)
+            .signupUser(username: username, email: email, password: password);
+        if (result == true) {
+          setState(() {
+            showDialog(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                      title: const Text("Successful"),
+                      content:
+                          const Text("You've been successfully registered."),
+                      actions: [
+                        TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: const Text("Ok"))
+                      ],
+                    ));
+            _isLoginMode = !_isLoginMode;
+          });
+        } else {
+          showDialog(
+              context: context,
+              builder: (ctx) => AlertDialog(
+                    title: const Text("Error"),
+                    content: const Text("Something went wrong!"),
+                    actions: [
+                      TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: const Text("Ok"))
+                    ],
+                  ));
+        }
+      } else {
+        showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+                  title: const Text("Error"),
+                  content: const Text("Passwords are not match!"),
+                  actions: [
+                    TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text("Ok"))
+                  ],
+                ));
+      }
+    }
+  }
 }

@@ -19,17 +19,32 @@ class UserProvider with ChangeNotifier {
     Map<String, dynamic> response =
         await sendDataToServer("/users/login", userCredential);
     if (response["status"] == "ok") {
-      var userData = response["user"];
-      print(userData);
+      Map<String, dynamic> userData = response["user"];
       user = User(
         id: userData["_id"]["\$oid"],
         username: userData["username"],
         email: userData["email"],
-        name: userData["name"],
-        family: userData["family"],
       );
       return true;
     }
     return false;
+  }
+
+  Future<dynamic> signupUser({
+    required String username,
+    required String email,
+    required String password,
+  }) async {
+    Map<String, String> userCredential = {
+      "username": username,
+      "email": email,
+      "password": password,
+    };
+    Map<String, dynamic> response =
+        await sendDataToServer('/users/signup', userCredential);
+    if (response["status"] == "ok") {
+      return true;
+    }
+    return response["message"];
   }
 }

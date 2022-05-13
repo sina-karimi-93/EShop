@@ -329,7 +329,7 @@ class Users:
         """
         This function get the data from body and add new user.
         """
-
+        print("Signup Request")
         user_data = APITools.prepare_header_data(request)
         user_data["create_data"] = datetime.now()
         user_data["password"] = APITools.encode_password(user_data['password'])
@@ -339,9 +339,16 @@ class Users:
             user = db.get_record({"username": user_data["username"]})
             if user is None:
                 new_user = db.insert_record(user_data)
-                APITools.check_prepare_send(response, new_user)
+                new_user = APITools.prepare_data_before_send(new_user)
+                print(new_user)
+                response.media = {
+                    "status": "ok",
+                    "message": falcon.HTTP_200,
+                    "user": new_user}
                 return
-            response.media = {"error": "This username is currently exists!"}
+            response.media = {"status": "error",
+                              "message": "This username is currently exists!",
+                              }
 
     def on_patch_edit(self, request, response) -> None:
         """
