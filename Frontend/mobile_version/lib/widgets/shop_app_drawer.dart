@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_version/Constants/icons.dart';
+import 'package:mobile_version/screens/auth_screen/auth_screen.dart';
 import 'package:mobile_version/screens/cart_screen.dart/cart_screen.dart';
 import 'package:mobile_version/screens/home_screen/home_screen.dart';
 import 'package:mobile_version/screens/shop_screen/shop_screen.dart';
@@ -59,6 +60,11 @@ class ShopAppDrawer extends StatelessWidget {
                               title: "Carts", icon: Icons.shopify)),
                       const DrawerItems(
                           title: "Orders", icon: Icons.monetization_on_sharp),
+                      GestureDetector(
+                          onTap: () => Navigator.of(context)
+                              .pushNamed(AuthScreen.routeName),
+                          child: const DrawerItems(
+                              title: "Logout", icon: Icons.logout)),
                     ],
                   ),
                 ),

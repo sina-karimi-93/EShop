@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_version/providers/user_provider.dart';
+import 'package:mobile_version/screens/home_screen/home_screen.dart';
 import 'package:provider/provider.dart';
 import '../../widgets/fancy_text.dart';
 
@@ -234,11 +235,26 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
-  void login(userDataProvider) {
+  void login(userDataProvider) async {
     String username = _usernameController.value.text;
     String password = _passwordController.value.text;
-    Provider.of<UserProvider>(context, listen: false)
+    bool result = await Provider.of<UserProvider>(context, listen: false)
         .loginUser(username: username, password: password);
+    if (result) {
+      Navigator.of(context).pushNamed(HomeScreen.routeName);
+    } else {
+      showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+                title: const Text("Error"),
+                content: Text("Invalid username or password!"),
+                actions: [
+                  TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text("Ok"))
+                ],
+              ));
+    }
   }
 
   void signup() {}
