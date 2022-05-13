@@ -35,27 +35,15 @@ class CategoryItem extends StatelessWidget {
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.secondary,
               borderRadius: BorderRadius.circular(90),
-              // boxShadow: const [
-              //   BoxShadow(
-              //     color: Colors.black87,
-              //     blurRadius: 5,
-              //     spreadRadius: 3,
-              //   ),
-              //   BoxShadow(
-              //     color: Colors.white,
-              //     blurRadius: 1,
-              //     spreadRadius: 2,
-              //   ),
-              // ],
             ),
             child: Center(
                 child: Text(
               category,
               softWrap: true,
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.primary,
               ),
             )),
           ),

@@ -21,6 +21,7 @@ class FancyText extends StatelessWidget {
         // Stroked text as border.
         Text(
           text,
+          textAlign: TextAlign.center,
           style: TextStyle(
             letterSpacing: letterSpacing,
             fontSize: fontSize,
@@ -33,6 +34,7 @@ class FancyText extends StatelessWidget {
         // Solid text as fill.
         Text(
           text,
+          textAlign: TextAlign.center,
           style: TextStyle(
             letterSpacing: letterSpacing,
             fontSize: fontSize,

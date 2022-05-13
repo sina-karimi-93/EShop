@@ -29,10 +29,10 @@ class CardItemsCountBadge extends StatelessWidget {
           child: CircleAvatar(
             backgroundColor: Theme.of(context).colorScheme.secondary,
             maxRadius: 10,
-            child: const Text(
+            child: Text(
               "12",
               style: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.primary,
                 fontSize: 11,
                 fontWeight: FontWeight.bold,
               ),

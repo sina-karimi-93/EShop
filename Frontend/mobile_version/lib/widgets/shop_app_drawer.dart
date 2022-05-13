@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_version/Constants/icons.dart';
+import 'package:mobile_version/Models/user.dart';
+import 'package:mobile_version/providers/user_provider.dart';
 import 'package:mobile_version/screens/auth_screen/auth_screen.dart';
 import 'package:mobile_version/screens/cart_screen.dart/cart_screen.dart';
 import 'package:mobile_version/screens/home_screen/home_screen.dart';
 import 'package:mobile_version/screens/shop_screen/shop_screen.dart';
+import 'package:provider/provider.dart';
 import '../widgets/fancy_text.dart';
 
 class ShopAppDrawer extends StatelessWidget {
@@ -61,8 +64,12 @@ class ShopAppDrawer extends StatelessWidget {
                       const DrawerItems(
                           title: "Orders", icon: Icons.monetization_on_sharp),
                       GestureDetector(
-                          onTap: () => Navigator.of(context)
-                              .pushNamed(AuthScreen.routeName),
+                          onTap: () {
+                            Provider.of<UserProvider>(context, listen: false)
+                                .user = "";
+                            Navigator.of(context)
+                                .pushNamed(AuthScreen.routeName);
+                          },
                           child: const DrawerItems(
                               title: "Logout", icon: Icons.logout)),
                     ],
@@ -84,12 +91,14 @@ class CustomDrawerHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final User user = Provider.of<UserProvider>(context).user;
     return DrawerHeader(
       padding: const EdgeInsets.all(0),
       child: Container(
         color: Colors.white,
         child: Center(
           child: FancyText(
+            // text: "Enjoy your shop!\n${user.username}",
             text: "Enjoy your shop!",
             fontSize: 30,
             letterSpacing: 3,
@@ -116,26 +125,26 @@ class DrawerItems extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
             // color: Theme.of(context).colorScheme.secondary,
-            color: Colors.orange,
+            color: Theme.of(context).colorScheme.secondary,
           ),
         ),
       ),
       child: ListTile(
         leading: Icon(
           icon,
-          color: Colors.orange,
+          color: Theme.of(context).colorScheme.secondary,
         ),
         title: Text(
           title,
           style: const TextStyle(color: Colors.white),
         ),
-        trailing: const Icon(
+        trailing: Icon(
           Icons.arrow_right,
-          color: Colors.orange,
+          color: Theme.of(context).colorScheme.secondary,
         ),
       ),
     );

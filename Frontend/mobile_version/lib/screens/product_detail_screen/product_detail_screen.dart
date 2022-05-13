@@ -282,7 +282,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addToCard,
-        child: const Icon(shopping_cart),
+        child: Icon(
+          shopping_cart,
+          color: Theme.of(context).colorScheme.primary,
+        ),
       ),
     );
   }

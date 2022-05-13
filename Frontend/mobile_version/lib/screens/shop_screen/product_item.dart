@@ -25,11 +25,11 @@ class ProductItem extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
-              color: Colors.deepOrange,
-              blurRadius: 3,
-              spreadRadius: 2,
+              color: Theme.of(context).colorScheme.secondary,
+              blurRadius: 2,
+              spreadRadius: 1,
             ),
           ],
         ),

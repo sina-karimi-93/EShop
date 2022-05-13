@@ -76,6 +76,9 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   Widget _loginModeWidgets(Size size, bool isPortrait, var userProviderData) {
+    /*
+    The method returns the widgets for Login user.
+    */
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -160,6 +163,9 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   Widget _signupModeWidgets(Size size) {
+    /*
+    The method returns the widgets for Signing.
+    */
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -298,11 +304,14 @@ class _AuthScreenState extends State<AuthScreen> {
     String password = _passwordController.value.text;
     final form = _loginFormKey.currentState;
     if (form!.validate()) {
+      // It is ready for authentication
       bool result = await Provider.of<UserProvider>(context, listen: false)
           .loginUser(username: username, password: password);
       if (result) {
+        // Successfullt authenticated
         Navigator.of(context).pushNamed(HomeScreen.routeName);
       } else {
+        // Username or Password are not correct
         showDialog(
             context: context,
             builder: (ctx) => AlertDialog(
@@ -335,9 +344,11 @@ class _AuthScreenState extends State<AuthScreen> {
       var password = _passwordController.value.text;
       var password2 = _password2Controller.value.text;
       if (password == password2) {
+        // it is ready for registration.
         bool result = await Provider.of<UserProvider>(context, listen: false)
             .signupUser(username: username, email: email, password: password);
         if (result == true) {
+          // New User has beeen Registered
           setState(() {
             showDialog(
                 context: context,
@@ -354,6 +365,8 @@ class _AuthScreenState extends State<AuthScreen> {
             _isLoginMode = !_isLoginMode;
           });
         } else {
+          // There is some error, usually the username is taken, but for
+          // security issues we don not show this type of message.
           showDialog(
               context: context,
               builder: (ctx) => AlertDialog(
@@ -367,6 +380,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   ));
         }
       } else {
+        // Passwords are not match
         showDialog(
             context: context,
             builder: (ctx) => AlertDialog(

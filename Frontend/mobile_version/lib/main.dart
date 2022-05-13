@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         theme: theme.copyWith(
           colorScheme: theme.colorScheme.copyWith(
             primary: const Color.fromRGBO(20, 35, 51, 1),
-            secondary: Colors.deepOrange,
+            secondary: Colors.amber[600],
           ),
         ),
         initialRoute: AuthScreen.routeName,
