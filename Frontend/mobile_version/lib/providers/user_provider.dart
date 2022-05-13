@@ -35,6 +35,12 @@ class UserProvider with ChangeNotifier {
     required String email,
     required String password,
   }) async {
+    /*
+    This method is for register a new user.
+    It receives username, email and passwor, then through
+    a post http request sends it to the server. 
+    */
+
     Map<String, String> userCredential = {
       "username": username,
       "email": email,

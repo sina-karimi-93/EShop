@@ -134,7 +134,7 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
         ),
         ElevatedButton(
-          onPressed: () => login(userProviderData),
+          onPressed: () => login(),
           child: const Text(
             "Login",
             style: TextStyle(
@@ -286,7 +286,14 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
-  void login(userDataProvider) async {
+  void login() async {
+    /*
+    This method is for login a user.
+    1 - Gets the form state for validation
+    2 - if validation is ok, then it collect inputs data
+    4 - Via provider, asks for checking the user credential
+    5 - After successfull authentication, it will navigate to home screen
+    */
     String username = _usernameController.value.text;
     String password = _passwordController.value.text;
     final form = _loginFormKey.currentState;
@@ -312,6 +319,15 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   void signup() async {
+    /*
+    This method is for register new user.
+    1 - Gets the form state for validation
+    2 - if validation is ok, then it collect inputs data
+    3 - check whether passwords are match or not
+    4 - Via provider, asks for registering the user
+    5 - After successfull registeration, it will show a dialog and
+        leads user to login mode.
+    */
     final form = _signupFormKey.currentState;
     if (form!.validate()) {
       var username = _usernameController.value.text;
