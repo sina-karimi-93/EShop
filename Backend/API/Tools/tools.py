@@ -24,6 +24,18 @@ class APITools:
         return json.loads(config)
 
     @staticmethod
+    def prepare_data_before_send(data: list or dict) -> dict:
+        """
+        This method prepare data for responding through http methods.
+        Via json_utils tools it convert data to proper shape.
+        """
+        if data:
+            reshape_fields = json_util.dumps(data)
+            serialized_data = json.loads(reshape_fields)
+            return serialized_data
+        return None
+
+    @staticmethod
     def check_prepare_send(response, data: list or dict) -> None:
         """
         This function stands for preparing and return data as a response.
@@ -92,6 +104,3 @@ class APITools:
 
         is_match = bcrypt.checkpw(password.encode(), encoded_password.encode())
         return is_match
-
-
-

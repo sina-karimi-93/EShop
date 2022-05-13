@@ -299,6 +299,7 @@ class Users:
         4 - return the user
         5 - if didn't pass the previous stages, return error
         """
+        print("LOGIN REQUEST")
         auth_data = APITools.prepare_header_data(request)
         with Database(SERVER, PORT, DB_NAME, 'users') as db:
             db: Database
@@ -307,15 +308,22 @@ class Users:
                 find_one=True,
             )
         if user:
+            print("User Exists")
             is_auth = APITools.check_password(
                 password=auth_data["password"],
                 encoded_password=user["password"]
             )
             if is_auth:
-                user = APITools.prepare_header_data(user)
-                response.media = {"user": user}
-            return
-        response.media = {"error": "Invalid username or password!"}
+                print("Authenticated")
+                user = APITools.prepare_data_before_send(user)
+                print(user)
+                response.media = {
+                    "status": "ok",
+                    "message": falcon.HTTP_200,
+                    "user": user}
+                return
+        response.media = {"status": "error",
+                          "message": "Invalid username or password"}
 
     def on_post_signup(self, request, response) -> None:
         """

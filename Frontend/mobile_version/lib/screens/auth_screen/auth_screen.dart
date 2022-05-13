@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_version/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 import '../../widgets/fancy_text.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -20,6 +22,7 @@ class _AuthScreenState extends State<AuthScreen> {
     final Size size = MediaQuery.of(context).size;
     final bool isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
+    var userProviderData = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
       resizeToAvoidBottomInset: false,
@@ -58,7 +61,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   ],
                 ),
                 child: _isLoginMode
-                    ? _loginModeWidgets(size, isPortrait)
+                    ? _loginModeWidgets(size, isPortrait, userProviderData)
                     : _signupModeWidgets(size),
               ),
               // ========================= Actions ============================
@@ -69,7 +72,7 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
-  Widget _loginModeWidgets(Size size, bool isPortrait) {
+  Widget _loginModeWidgets(Size size, bool isPortrait, var userProviderData) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -112,7 +115,7 @@ class _AuthScreenState extends State<AuthScreen> {
           ),
         ),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () => login(userProviderData),
           child: const Text(
             "Login",
             style: TextStyle(
@@ -231,6 +234,12 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
-  void login() {}
+  void login(userDataProvider) {
+    String username = _usernameController.value.text;
+    String password = _passwordController.value.text;
+    Provider.of<UserProvider>(context, listen: false)
+        .loginUser(username: username, password: password);
+  }
+
   void signup() {}
 }
