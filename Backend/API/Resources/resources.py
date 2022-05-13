@@ -298,12 +298,15 @@ class Users:
 
             user = db.get_record(
                 {"username": auth_data["username"]}, find_one=True)
-        is_auth = APITools.check_password(
-            password=auth_data["password"],
-            encoded_password=user["password"]
-        )
+        if user:
+            is_auth = APITools.check_password(
+                password=auth_data["password"],
+                encoded_password=user["password"]
+            )
 
-        response.media = {"is_auth": is_auth}
+            response.media = {"is_auth": is_auth}
+            return
+        response.media = {"error": "Invalid username!"}
 
     def on_post_signup(self, request, response) -> None:
         """
