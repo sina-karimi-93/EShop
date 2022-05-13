@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_version/Models/product.dart';
-import 'package:http/http.dart' as http;
+import './provider_tools.dart';
 
 class ProductsProvider with ChangeNotifier {
   List<Product> _products = [];
@@ -16,28 +16,6 @@ class ProductsProvider with ChangeNotifier {
 
   List<String> get categories {
     return [..._categories];
-  }
-
-  Future<dynamic> _getDataFromServer(String path) async {
-    /*
-    This method is responsible for getting data from the server.
-    First it get data from server, and via json package, we decode
-    it to readble data like List<Map<...>> or Map<...> then return
-    it.
-
-    args:
-      path -> server url
-    */
-    try {
-      final url = Uri.http('192.168.1.104:8000', path);
-
-      var response = await http.get(url);
-      var data = response.body;
-      var decodedData = json.decode(data);
-      return decodedData;
-    } catch (error) {
-      rethrow;
-    }
   }
 
   void _prepareCategories(loadedCategories) {
@@ -117,8 +95,8 @@ class ProductsProvider with ChangeNotifier {
     */
 
     try {
-      var loadedProducts = await _getDataFromServer('/products');
-      var loadedCategories = await _getDataFromServer('/products/categories');
+      var loadedProducts = await getDataFromServer('/products');
+      var loadedCategories = await getDataFromServer('/products/categories');
       _prepareProducts(loadedProducts);
       _prepareCategories(loadedCategories);
     } catch (error) {
