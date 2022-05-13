@@ -3,6 +3,7 @@ import 'package:mobile_version/Constants/icons.dart';
 import 'package:mobile_version/screens/cart_screen.dart/cart_screen.dart';
 import 'package:mobile_version/screens/home_screen/home_screen.dart';
 import 'package:mobile_version/screens/shop_screen/shop_screen.dart';
+import '../widgets/fancy_text.dart';
 
 class ShopAppDrawer extends StatelessWidget {
   final Size size;
@@ -82,31 +83,14 @@ class CustomDrawerHeader extends StatelessWidget {
       child: Container(
         color: Colors.white,
         child: Center(
-            child: Stack(
-          children: <Widget>[
-            // Stroked text as border.
-            Text(
-              'Enjoy Your Shop!',
-              style: TextStyle(
-                letterSpacing: 3,
-                fontSize: 30,
-                foreground: Paint()
-                  ..style = PaintingStyle.stroke
-                  ..strokeWidth = 4
-                  ..color = Theme.of(context).colorScheme.primary,
-              ),
-            ),
-            // Solid text as fill.
-            Text(
-              'Enjoy Your Shop!',
-              style: TextStyle(
-                letterSpacing: 3,
-                fontSize: 30,
-                color: Colors.amber[600],
-              ),
-            ),
-          ],
-        )),
+          child: FancyText(
+            text: "Enjoy your shop!",
+            fontSize: 30,
+            letterSpacing: 3,
+            outlineColor: Theme.of(context).colorScheme.primary,
+            inlineColor: Colors.amber[600],
+          ),
+        ),
       ),
     );
   }

@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // Screens
 // import './screens/welcome_screen/welcome_screen.dart';
-import 'package:mobile_version/screens/home_screen/home_screen.dart';
+import './screens/auth_screen/auth_screen.dart';
+import './screens/home_screen/home_screen.dart';
 import './screens/cart_screen.dart/cart_screen.dart';
-import 'package:mobile_version/screens/shop_screen/shop_screen.dart';
+import './screens/shop_screen/shop_screen.dart';
 // Providers
 import './providers/products_provider.dart';
 
@@ -32,8 +33,9 @@ class MyApp extends StatelessWidget {
             secondary: Colors.deepOrange,
           ),
         ),
-        initialRoute: HomeScreen.routeName,
+        initialRoute: AuthScreen.routeName,
         routes: {
+          AuthScreen.routeName: (context) => const AuthScreen(),
           HomeScreen.routeName: (context) => const HomeScreen(),
           ShopScreen.routeName: (context) => const ShopScreen(),
           CartScreen.routeName: (context) => const CartScreen()
