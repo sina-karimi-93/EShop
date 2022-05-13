@@ -345,7 +345,7 @@ class _AuthScreenState extends State<AuthScreen> {
       var password2 = _password2Controller.value.text;
       if (password == password2) {
         // it is ready for registration.
-        bool result = await Provider.of<UserProvider>(context, listen: false)
+        var result = await Provider.of<UserProvider>(context, listen: false)
             .signupUser(username: username, email: email, password: password);
         if (result == true) {
           // New User has beeen Registered
@@ -371,7 +371,7 @@ class _AuthScreenState extends State<AuthScreen> {
               context: context,
               builder: (ctx) => AlertDialog(
                     title: const Text("Error"),
-                    content: const Text("Something went wrong!"),
+                    content: Text(result),
                     actions: [
                       TextButton(
                           onPressed: () => Navigator.of(context).pop(),

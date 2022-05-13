@@ -27,6 +27,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("Called Detail");
     bool hasComments = widget.product.comments.isNotEmpty;
     final Size size = MediaQuery.of(context).size;
     final bool isPortrait =

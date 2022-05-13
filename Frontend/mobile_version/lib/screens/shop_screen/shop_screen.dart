@@ -15,27 +15,29 @@ class ShopScreen extends StatefulWidget {
 }
 
 class _ShopScreenState extends State<ShopScreen> {
-  bool _isLoading = false;
+  bool _isLoading = true;
 
-  // @override
-  // void initState() {
-  //   Provider.of<ProductsProvider>(context, listen: false)
-  //       .prepareProductsData()
-  //       .then((value) => {
-  //             setState((() {
-  //               _isLoading = false;
-  //             }))
-  //           });
+  @override
+  void initState() {
+    Provider.of<ProductsProvider>(context, listen: false)
+        .prepareProductsData()
+        .then((value) => {
+              setState((() {
+                _isLoading = false;
+              }))
+            });
 
-  //   super.initState();
-  // }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     final bool isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
-    Provider.of<ProductsProvider>(context, listen: false).prepareProductsData();
+    // Provider.of<ProductsProvider>(context, listen: false).prepareProductsData();
+    print("Called Shop");
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
       drawer: ShopAppDrawer(size: size, isPortrait: isPortrait),
