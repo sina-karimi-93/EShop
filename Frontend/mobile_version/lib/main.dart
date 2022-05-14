@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_version/Database/db_handler.dart';
+import 'package:mobile_version/widgets/waiting_screen.dart';
 import 'package:provider/provider.dart';
 // Screens
 // import './screens/welcome_screen/welcome_screen.dart';
@@ -10,6 +11,7 @@ import './screens/shop_screen/shop_screen.dart';
 // Providers
 import './providers/products_provider.dart';
 import 'providers/user_provider.dart';
+import './providers/cart_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,8 +26,12 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: ProductsProvider()),
-        ChangeNotifierProvider.value(value: UserProvider()),
+        // ChangeNotifierProvider.value(value: ProductsProvider()),
+        // ChangeNotifierProvider.value(value: UserProvider()),
+        // ChangeNotifierProvider.value(value: CartProvider()),
+        ChangeNotifierProvider(create: ((_) => UserProvider())),
+        ChangeNotifierProvider(create: ((_) => ProductsProvider())),
+        ChangeNotifierProvider(create: ((_) => CartProvider())),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -48,22 +54,7 @@ class MyApp extends StatelessWidget {
                 return const AuthScreen();
               }
             } else if (snapshop.connectionState == ConnectionState.waiting) {
-              return Scaffold(
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                body: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(30.0),
-                    child: Text(
-                      "Please wait...",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                    ),
-                  ),
-                ),
-              );
+              return const WaitingScreen();
             }
             return Scaffold(
               backgroundColor: Theme.of(context).colorScheme.primary,

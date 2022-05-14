@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-Future<dynamic> getDataFromServer(String path) async {
+Future<dynamic> getDataFromServer(
+    String path, Map<String, String> header) async {
   /*
     This method is responsible for getting data from the server.
     First it get data from server, and via json package, we decode
@@ -14,8 +15,7 @@ Future<dynamic> getDataFromServer(String path) async {
     */
   try {
     final url = Uri.http('192.168.1.104:8000', path);
-
-    var response = await http.get(url);
+    var response = await http.get(url, headers: header);
     var data = response.body;
     var decodedData = json.decode(data);
     return decodedData;

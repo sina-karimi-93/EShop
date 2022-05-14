@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_version/Models/cart.dart';
 import 'package:mobile_version/Models/product.dart';
-import 'package:mobile_version/providers/products_provider.dart';
+import 'package:mobile_version/providers/cart_provider.dart';
 import 'package:provider/provider.dart';
 
 class CartItem extends StatelessWidget {
-  const CartItem({Key? key}) : super(key: key);
-
+  const CartItem({required this.cartItem, required this.product, Key? key})
+      : super(key: key);
+  final Item cartItem;
+  final Product product;
   @override
   Widget build(BuildContext context) {
-    final Product product =
-        Provider.of<ProductsProvider>(context, listen: false).products[1];
     final Size size = MediaQuery.of(context).size;
+    final cartData = Provider.of<CartProvider>(context);
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       margin: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: const [
+        borderRadius: BorderRadius.circular(50),
+        boxShadow: [
           BoxShadow(
-            spreadRadius: 5,
+            spreadRadius: 3,
             blurRadius: 3,
-            color: Colors.orange,
+            color: Theme.of(context).colorScheme.secondary,
           )
         ],
       ),
@@ -38,24 +40,21 @@ class CartItem extends StatelessWidget {
                 width: size.width * 0.3,
                 fit: BoxFit.fill,
               ),
-              Container(
-                margin: const EdgeInsets.only(right: 10),
-                child: Flexible(
-                  child: Text(
-                    product.title,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
+              Flexible(
+                child: Text(
+                  product.title,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
-              )
+              ),
             ],
           ),
           const Divider(),
-          // ======================== Info ========================
+          // ======================== Price ========================
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -67,7 +66,7 @@ class CartItem extends StatelessWidget {
                     color: Theme.of(context).colorScheme.primary),
               ),
               Text(
-                "\$${product.price}",
+                "\$${cartItem.price}",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -76,7 +75,7 @@ class CartItem extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 5),
-
+          // ======================== Total Price ========================
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -88,7 +87,7 @@ class CartItem extends StatelessWidget {
                     color: Theme.of(context).colorScheme.primary),
               ),
               Text(
-                "\$150",
+                "\$${cartItem.totalItemPrice}",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -97,6 +96,7 @@ class CartItem extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 5),
+          // ======================== Count ========================
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -110,13 +110,17 @@ class CartItem extends StatelessWidget {
               Row(
                 children: [
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        cartData.changeItemCount(cartItem.item, false);
+                      },
                       icon: const Icon(
                         Icons.arrow_downward,
                         color: Colors.red,
                       )),
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        cartData.changeItemCount(cartItem.item, true);
+                      },
                       icon: const Icon(
                         Icons.arrow_upward,
                         color: Colors.green,
@@ -124,26 +128,13 @@ class CartItem extends StatelessWidget {
                 ],
               ),
               Text(
-                "5",
+                "${cartItem.count}",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.primary),
               ),
             ],
-          ),
-          const Divider(),
-          ElevatedButton(
-            onPressed: () {},
-            child: Text(
-              "Remove",
-              style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.bold),
-            ),
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.orange),
-            ),
           ),
         ],
       ),

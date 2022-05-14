@@ -95,8 +95,9 @@ class ProductsProvider with ChangeNotifier {
     */
 
     try {
-      var loadedProducts = await getDataFromServer('/products');
-      var loadedCategories = await getDataFromServer('/products/categories');
+      var loadedProducts = await getDataFromServer('/products', {});
+      var loadedCategories =
+          await getDataFromServer('/products/categories', {});
       _prepareProducts(loadedProducts);
       _prepareCategories(loadedCategories);
     } catch (error) {
@@ -113,5 +114,17 @@ class ProductsProvider with ChangeNotifier {
       return product.categories.contains(category);
     }).toList();
     return sameProducts;
+  }
+
+  Product findProductById(String id) {
+    /*
+    Find a single product based on its id.
+
+    args:
+      id
+    */
+    final Product product =
+        products.where((element) => element.id == id).toList().first;
+    return product;
   }
 }

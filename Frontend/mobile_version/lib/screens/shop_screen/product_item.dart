@@ -45,6 +45,8 @@ class ProductItem extends StatelessWidget {
                 child: Center(
                     child: Text(
                   product.title,
+                  maxLines: 1,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.secondary,
@@ -59,6 +61,7 @@ class ProductItem extends StatelessWidget {
                 child: Center(
                     child: Text(
                   "\$${product.price}",
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.secondary,

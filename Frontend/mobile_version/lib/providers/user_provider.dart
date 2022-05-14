@@ -1,11 +1,16 @@
 import 'package:flutter/widgets.dart';
 import 'package:mobile_version/Models/user.dart';
-import 'package:sqflite/sqflite.dart';
 import '../Database/db_handler.dart';
 import 'provider_tools.dart';
 
 class UserProvider with ChangeNotifier {
-  var user;
+  User user = User(
+    localId: 1,
+    email: "",
+    password: "",
+    serverId: "",
+    username: "",
+  );
 
   Future<bool> loginUser(
       {required String username, required String password}) async {
@@ -27,6 +32,7 @@ class UserProvider with ChangeNotifier {
         "serverId": response["user"]["_id"]["\$oid"],
         "username": response["user"]["username"],
         "email": response["user"]["email"],
+        "password": response["user"]["password"]
       };
       // Insert user into local database
       int localId =
@@ -68,16 +74,23 @@ class UserProvider with ChangeNotifier {
     remove the user data from this class.
     */
     DatabaseHandler.deleteRecord("users", user.localId);
+    user = User(
+      localId: 1,
+      email: "",
+      password: "",
+      serverId: "",
+      username: "",
+    );
     return true;
   }
 
   bool setUser(userData) {
     user = User(
-      localId: userData["localId"],
-      serverId: userData["serverId"],
-      username: userData["username"],
-      email: userData["email"],
-    );
+        localId: userData["localId"],
+        serverId: userData["serverId"],
+        username: userData["username"],
+        email: userData["email"],
+        password: userData["password"]);
     return true;
   }
 }

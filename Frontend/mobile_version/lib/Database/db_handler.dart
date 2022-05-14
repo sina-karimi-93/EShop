@@ -17,7 +17,7 @@ class DatabaseHandler {
       path.join(dbPath, "eshop.db"),
       onCreate: (db, version) {
         return db.execute(
-            "CREATE TABLE users(localId INTEGER PRIMARY KEY,serverId Text, username TEXT, email TEXT)");
+            "CREATE TABLE users(localId INTEGER PRIMARY KEY,serverId Text, username TEXT, email TEXT, password TEXT)");
       },
       version: 1,
     );

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_version/Models/user.dart';
+import 'package:mobile_version/providers/cart_provider.dart';
+import 'package:mobile_version/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/products_provider.dart';
