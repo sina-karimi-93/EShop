@@ -25,6 +25,7 @@ class Products:
         This function is for a get request and returns all products
         from database.
         """
+        pprint(request.headers)
         print("There is a request...")
         with Database(SERVER, PORT, DB_NAME, 'products') as db:
 
@@ -216,6 +217,7 @@ class Carts:
         params:
             user_id:str
         """
+
         with Database(SERVER, PORT, DB_NAME, 'carts') as db:
             db: Database
 
