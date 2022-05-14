@@ -5,7 +5,7 @@ import 'provider_tools.dart';
 
 class CartProvider with ChangeNotifier {
   var _cart;
-
+  bool isLoaded = false;
   Cart get cart {
     return _cart;
   }
@@ -33,6 +33,7 @@ class CartProvider with ChangeNotifier {
           items: cartItems,
           totalPrice: userCart["total_price"],
           totalCount: userCart["total_count"]);
+      isLoaded = true;
       notifyListeners();
       return true;
     }

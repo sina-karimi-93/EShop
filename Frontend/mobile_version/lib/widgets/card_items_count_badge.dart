@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_version/providers/cart_provider.dart';
+import 'package:mobile_version/providers/user_provider.dart';
+import 'package:provider/provider.dart';
+
+import '../Models/user.dart';
 
 class CardItemsCountBadge extends StatelessWidget {
   const CardItemsCountBadge({
     Key? key,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
+    final User user = Provider.of<UserProvider>(context).user;
+    final cartData = Provider.of<CartProvider>(context);
+    if (cartData.isLoaded == false) {
+      cartData.fetchAndSetCart(user.serverId);
+    }
     return Stack(
       children: [
         Container(
@@ -30,7 +39,7 @@ class CardItemsCountBadge extends StatelessWidget {
             backgroundColor: Theme.of(context).colorScheme.secondary,
             maxRadius: 10,
             child: Text(
-              "12",
+              cartData.cart.totalCount.toString(),
               style: TextStyle(
                 color: Theme.of(context).colorScheme.primary,
                 fontSize: 11,
