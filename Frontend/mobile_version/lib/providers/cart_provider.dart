@@ -73,24 +73,34 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void removeItem(Item item) {
+    /*
+    This method removes an item from cart items and update
+    totalCount and totalPrice fields.
+    */
+    cart.totalCount -= item.count;
+    cart.totalPrice -= item.totalItemPrice;
+    cart.items.remove(item);
+    notifyListeners();
+  }
+
   Future<void> updateCart() async {
     var items = [];
     cart.items.forEach(
       (element) => items.add({
-        "item": element.item,
+        "item": {"\$oid": element.item},
         "count": element.count,
         "total_item_price": element.totalItemPrice,
         "price": element.price,
       }),
     );
     Map<String, dynamic> updatedCart = {
-      "owner": cart.owner,
+      "owner": {"\$oid": cart.owner},
       "items": items,
       "total_price": cart.totalPrice,
       "total_count": cart.totalCount,
     };
     final response =
         await sendDataToServer("/carts/${_cart.owner}", updatedCart, "put");
-    print(response);
   }
 }

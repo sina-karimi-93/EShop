@@ -22,6 +22,7 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   bool _isLoaded = false;
+  bool _isUpdated = true;
   @override
   void initState() {
     final User user = Provider.of<UserProvider>(context, listen: false).user;
@@ -53,10 +54,53 @@ class _CartScreenState extends State<CartScreen> {
             style: TextStyle(color: Colors.white),
           ),
           actions: [
-            IconButton(
-              icon: const Icon(Icons.save),
-              onPressed: () => cartData.updateCart(),
-            ),
+            _isUpdated
+                ? IconButton(
+                    icon: const Icon(Icons.save),
+                    onPressed: () {
+                      setState(() {
+                        _isUpdated = false;
+                      });
+                      cartData.updateCart().then((value) {
+                        setState(() {
+                          _isUpdated = true;
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.done,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                ),
+                                const SizedBox(width: 5),
+                                const Text(
+                                  "Your cart has beeen successfully updated!",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      });
+                    },
+                  )
+                : Padding(
+                    padding: const EdgeInsets.only(right: 15),
+                    child: Center(
+                      child: SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                    ),
+                  ),
             IconButton(
               icon: Icon(
                 shopping_cart,
@@ -136,7 +180,7 @@ class _CartScreenState extends State<CartScreen> {
                       key: Key(cart.items[index].item),
                       direction: DismissDirection.endToStart,
                       onDismissed: (value) {
-                        cart.items.removeAt(index);
+                        cartData.removeItem(cart.items[index]);
                       },
                       confirmDismiss: (DismissDirection direction) async {
                         return await showDialog(

@@ -238,13 +238,12 @@ class Carts:
         """
         print("Cart Update")
         data = APITools.prepare_header_data(request)
-        pprint(data)
-        # with Database(SERVER, PORT, DB_NAME, 'carts') as db:
-        #     db: Database
-        #     db.replace_record(
-        #         criteria={'owner': ObjectId(user_id)},
-        #         document=data,
-        #     )
+        with Database(SERVER, PORT, DB_NAME, 'carts') as db:
+            db: Database
+            db.replace_record(
+                criteria={'owner': ObjectId(user_id)},
+                document=data,
+            )
         response.media = {
             "status": "ok",
             "message": falcon.HTTP_200,
