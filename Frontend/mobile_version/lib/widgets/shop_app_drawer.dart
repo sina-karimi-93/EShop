@@ -70,6 +70,7 @@ class ShopAppDrawer extends StatelessWidget {
                                 .then(
                               (value) {
                                 if (value) {
+                                  print(value);
                                   Navigator.of(context)
                                       .pushNamed(AuthScreen.routeName);
                                 } else {

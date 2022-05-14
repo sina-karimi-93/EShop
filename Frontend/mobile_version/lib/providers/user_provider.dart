@@ -22,14 +22,19 @@ class UserProvider with ChangeNotifier {
         await sendDataToServer("/users/login", userCredential);
 
     if (response["status"] == "ok") {
-      Map<String, dynamic> userData = response["user"];
+      final userData = {
+        "id": response["user"]["_id"]["\$oid"],
+        "username": response["user"]["username"],
+        "email": response["user"]["email"],
+      };
       // Insert user into local database
+      print(userData);
       int localId =
           await DatabaseHandler.insertRecord(table: "users", data: userData);
 
       user = User(
         localId: localId,
-        serverId: userData["_id"]["\$oid"],
+        serverId: userData["id"],
         username: userData["username"],
         email: userData["email"],
       );

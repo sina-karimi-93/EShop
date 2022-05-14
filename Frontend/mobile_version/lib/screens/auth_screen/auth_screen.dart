@@ -13,11 +13,12 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
+  bool _isLoginMode = true;
+  bool _isLoading = false;
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _password2Controller = TextEditingController();
-  bool _isLoginMode = true;
   final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _signupFormKey = GlobalKey<FormState>();
   @override
@@ -55,11 +56,11 @@ class _AuthScreenState extends State<AuthScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(30),
-                  boxShadow: const [
+                  boxShadow: [
                     BoxShadow(
                       blurRadius: 5,
                       spreadRadius: 3,
-                      color: Colors.amber,
+                      color: Theme.of(context).colorScheme.secondary,
                     )
                   ],
                 ),
@@ -138,11 +139,26 @@ class _AuthScreenState extends State<AuthScreen> {
         ),
         ElevatedButton(
           onPressed: () => login(),
-          child: const Text(
-            "Login",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                "Login",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              if (_isLoading)
+                Container(
+                  margin: const EdgeInsets.only(left: 10),
+                  width: 13,
+                  height: 13,
+                  child: CircularProgressIndicator(
+                    color: Theme.of(context).colorScheme.secondary,
+                    strokeWidth: 2.3,
+                  ),
+                ),
+            ],
           ),
           style: ButtonStyle(
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -268,11 +284,25 @@ class _AuthScreenState extends State<AuthScreen> {
         const SizedBox(height: 35),
         ElevatedButton(
           onPressed: signup,
-          child: const Text(
-            "Signup",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
+          child: Row(
+            children: [
+              const Text(
+                "Signup",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              if (_isLoading)
+                Container(
+                  margin: const EdgeInsets.only(left: 10),
+                  width: 13,
+                  height: 13,
+                  child: CircularProgressIndicator(
+                    color: Theme.of(context).colorScheme.secondary,
+                    strokeWidth: 2.3,
+                  ),
+                ),
+            ],
           ),
           style: ButtonStyle(
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -304,6 +334,9 @@ class _AuthScreenState extends State<AuthScreen> {
     String password = _passwordController.value.text;
     final form = _loginFormKey.currentState;
     if (form!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
       // It is ready for authentication
       bool result = await Provider.of<UserProvider>(context, listen: false)
           .loginUser(username: username, password: password);
@@ -311,6 +344,9 @@ class _AuthScreenState extends State<AuthScreen> {
         // Successfullt authenticated
         Navigator.of(context).pushNamed(HomeScreen.routeName);
       } else {
+        setState(() {
+          _isLoading = false;
+        });
         // Username or Password are not correct
         showDialog(
             context: context,
@@ -368,30 +404,32 @@ class _AuthScreenState extends State<AuthScreen> {
           // There is some error, usually the username is taken, but for
           // security issues we don not show this type of message.
           showDialog(
-              context: context,
-              builder: (ctx) => AlertDialog(
-                    title: const Text("Error"),
-                    content: Text(result),
-                    actions: [
-                      TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: const Text("Ok"))
-                    ],
-                  ));
+            context: context,
+            builder: (ctx) => AlertDialog(
+              title: const Text("Error"),
+              content: Text(result),
+              actions: [
+                TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text("Ok"))
+              ],
+            ),
+          );
         }
       } else {
         // Passwords are not match
         showDialog(
-            context: context,
-            builder: (ctx) => AlertDialog(
-                  title: const Text("Error"),
-                  content: const Text("Passwords are not match!"),
-                  actions: [
-                    TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: const Text("Ok"))
-                  ],
-                ));
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: const Text("Error"),
+            content: const Text("Passwords are not match!"),
+            actions: [
+              TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text("Ok"))
+            ],
+          ),
+        );
       }
     }
   }

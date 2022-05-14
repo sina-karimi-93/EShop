@@ -77,7 +77,7 @@ class DatabaseHandler {
     return user.first;
   }
 
-  static Future<int> deleteRecord(String table, String id) async {
+  static Future<int> deleteRecord(String table, int id) async {
     /*
     This method is for removing a record from database. It gets table name
     and id, then remove the record with that id.
