@@ -25,8 +25,6 @@ class Products:
         This function is for a get request and returns all products
         from database.
         """
-        pprint(request.headers)
-        print("There is a request...")
         with Database(SERVER, PORT, DB_NAME, 'products') as db:
 
             products = [data for data in db.get_record(
@@ -217,7 +215,7 @@ class Carts:
         params:
             user_id:str
         """
-
+        print("Cart Request")
         with Database(SERVER, PORT, DB_NAME, 'carts') as db:
             db: Database
 
@@ -226,7 +224,12 @@ class Carts:
                     "owner": ObjectId(user_id)
                 }
             )
-        APITools.check_prepare_send(response=response, data=cart)
+        userCart = APITools.prepare_data_before_send(data=cart)
+        response.media = {
+            "status": "ok",
+            "message": falcon.HTTP_200,
+            "userCart": userCart
+        }
 
     def on_patch_detail(self, request, response, user_id: str) -> None:
         """
