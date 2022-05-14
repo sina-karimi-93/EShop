@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_version/Database/db_handler.dart';
 import 'package:provider/provider.dart';
 // Screens
 // import './screens/welcome_screen/welcome_screen.dart';
@@ -35,7 +36,51 @@ class MyApp extends StatelessWidget {
             secondary: Colors.amber[600],
           ),
         ),
-        initialRoute: AuthScreen.routeName,
+        home: FutureBuilder<List>(
+          future: DatabaseHandler.getRecord("users"),
+          builder: (context, snapshop) {
+            if (snapshop.connectionState == ConnectionState.done) {
+              if (snapshop.data!.isNotEmpty) {
+                return const HomeScreen();
+              } else {
+                return const AuthScreen();
+              }
+            } else if (snapshop.connectionState == ConnectionState.waiting) {
+              return Scaffold(
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                body: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(30.0),
+                    child: Text(
+                      "Please wait...",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }
+            return Scaffold(
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              body: const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(30.0),
+                  child: Text(
+                    "Something went wrong!",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                      color: Colors.red,
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
         routes: {
           AuthScreen.routeName: (context) => const AuthScreen(),
           HomeScreen.routeName: (context) => const HomeScreen(),

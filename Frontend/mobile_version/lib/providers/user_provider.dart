@@ -28,13 +28,12 @@ class UserProvider with ChangeNotifier {
         "email": response["user"]["email"],
       };
       // Insert user into local database
-      print(userData);
       int localId =
           await DatabaseHandler.insertRecord(table: "users", data: userData);
-
+      print(localId);
       user = User(
         localId: localId,
-        serverId: userData["id"],
+        id: userData["id"],
         username: userData["username"],
         email: userData["email"],
       );
@@ -72,13 +71,8 @@ class UserProvider with ChangeNotifier {
     This method first remove the user from local database, then
     remove the user data from this class.
     */
-    try {
-      DatabaseHandler.deleteRecord("users", user.localId);
-      user = "";
-      return true;
-    } catch (error) {
-      print(error);
-      return false;
-    }
+    DatabaseHandler.deleteRecord("users", user.id);
+    user = "";
+    return true;
   }
 }

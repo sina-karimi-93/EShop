@@ -9,7 +9,7 @@ import './provider_tools.dart';
 class ProductsProvider with ChangeNotifier {
   List<Product> _products = [];
   List<String> _categories = [];
-
+  bool isLoaded = false;
   List<Product> get products {
     return [..._products];
   }

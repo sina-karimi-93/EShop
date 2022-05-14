@@ -19,24 +19,30 @@ class _ShopScreenState extends State<ShopScreen> {
 
   @override
   void initState() {
-    Provider.of<ProductsProvider>(context, listen: false)
-        .prepareProductsData()
-        .then((value) => {
-              setState((() {
-                _isLoading = false;
-              }))
-            });
+    final providerData = Provider.of<ProductsProvider>(context, listen: false);
+    if (!providerData.isLoaded) {
+      providerData.prepareProductsData().then((value) => {
+            providerData.isLoaded = true,
+            setState((() {
+              _isLoading = false;
+            }))
+          });
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+    }
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    print(_isLoading);
     final Size size = MediaQuery.of(context).size;
     final bool isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
     // Provider.of<ProductsProvider>(context, listen: false).prepareProductsData();
-    print("Called Shop");
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
