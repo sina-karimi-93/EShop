@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_version/Constants/icons.dart';
-import 'package:mobile_version/Models/user.dart';
 import 'package:mobile_version/providers/user_provider.dart';
 import 'package:mobile_version/screens/auth_screen/auth_screen.dart';
 import 'package:mobile_version/screens/cart_screen.dart/cart_screen.dart';
@@ -8,6 +7,7 @@ import 'package:mobile_version/screens/home_screen/home_screen.dart';
 import 'package:mobile_version/screens/shop_screen/shop_screen.dart';
 import 'package:provider/provider.dart';
 import '../widgets/fancy_text.dart';
+import '../Database/db_handler.dart';
 
 class ShopAppDrawer extends StatelessWidget {
   final Size size;
@@ -66,9 +66,30 @@ class ShopAppDrawer extends StatelessWidget {
                       GestureDetector(
                           onTap: () {
                             Provider.of<UserProvider>(context, listen: false)
-                                .user = "";
-                            Navigator.of(context)
-                                .pushNamed(AuthScreen.routeName);
+                                .logoutUser()
+                                .then(
+                              (value) {
+                                if (value) {
+                                  Navigator.of(context)
+                                      .pushNamed(AuthScreen.routeName);
+                                } else {
+                                  showDialog(
+                                    context: context,
+                                    builder: (ctx) => AlertDialog(
+                                      title: const Text("Error"),
+                                      content:
+                                          const Text("Something went wrong"),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () =>
+                                                Navigator.of(context).pop(),
+                                            child: const Text("ok"))
+                                      ],
+                                    ),
+                                  );
+                                }
+                              },
+                            );
                           },
                           child: const DrawerItems(
                               title: "Logout", icon: Icons.logout)),

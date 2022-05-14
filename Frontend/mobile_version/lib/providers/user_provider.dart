@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:mobile_version/Models/user.dart';
-
+import '../Database/db_handler.dart';
 import 'provider_tools.dart';
 
 class UserProvider with ChangeNotifier {
@@ -11,6 +11,8 @@ class UserProvider with ChangeNotifier {
     /*
     This method check the desired user is exist or its credential
     matches or not. If it pass all of this, it will authenticated.
+    After authentication, the user will store in the local database
+    to preventing login for everytime.
     */
     Map<String, String> userCredential = {
       "username": username,
@@ -18,10 +20,16 @@ class UserProvider with ChangeNotifier {
     };
     Map<String, dynamic> response =
         await sendDataToServer("/users/login", userCredential);
+
     if (response["status"] == "ok") {
       Map<String, dynamic> userData = response["user"];
+      // Insert user into local database
+      int localId =
+          await DatabaseHandler.insertRecord(table: "users", data: userData);
+
       user = User(
-        id: userData["_id"]["\$oid"],
+        localId: localId,
+        serverId: userData["_id"]["\$oid"],
         username: userData["username"],
         email: userData["email"],
       );
@@ -52,5 +60,20 @@ class UserProvider with ChangeNotifier {
       return true;
     }
     return response["message"];
+  }
+
+  Future<bool> logoutUser() async {
+    /*
+    This method first remove the user from local database, then
+    remove the user data from this class.
+    */
+    try {
+      DatabaseHandler.deleteRecord("users", user.localId);
+      user = "";
+      return true;
+    } catch (error) {
+      print(error);
+      return false;
+    }
   }
 }

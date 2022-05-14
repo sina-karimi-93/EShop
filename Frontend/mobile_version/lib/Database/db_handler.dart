@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart' as db;
 import 'package:path/path.dart' as path;
 
-class Database {
+class DatabaseHandler {
   /*
   This class contains several static method for interacting
   to local database. Desired database is sqflite.
@@ -25,8 +25,11 @@ class Database {
     return database;
   }
 
-  static Future<int> insertRecord(
-      /*
+  static Future<int> insertRecord({
+    required String table,
+    required Map<String, dynamic> data,
+  }) async {
+    /*
     This static method gets table name and data and insert them
     into database. After inserting, it will return the id of the
     inserted data.
@@ -35,10 +38,12 @@ class Database {
       table
       data
     */
-      String table,
-      Map<String, dynamic> data) async {
     final db.Database database = await getDatabase();
-    int userId = await database.insert(table, data);
+    int userId = await database.insert(
+      table,
+      data,
+      conflictAlgorithm: db.ConflictAlgorithm.replace,
+    );
     return userId;
   }
 
