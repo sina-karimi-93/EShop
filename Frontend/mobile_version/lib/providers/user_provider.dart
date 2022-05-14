@@ -25,7 +25,7 @@ class UserProvider with ChangeNotifier {
       "password": password
     };
     Map<String, dynamic> response =
-        await sendDataToServer("/users/login", userCredential);
+        await sendDataToServer("/users/login", userCredential, "post");
 
     if (response["status"] == "ok") {
       final userData = {
@@ -61,7 +61,7 @@ class UserProvider with ChangeNotifier {
       "password": password,
     };
     Map<String, dynamic> response =
-        await sendDataToServer('/users/signup', userCredential);
+        await sendDataToServer('/users/signup', userCredential, "post");
     if (response["status"] == "ok") {
       return true;
     }

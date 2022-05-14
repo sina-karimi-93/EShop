@@ -6,8 +6,8 @@ import 'provider_tools.dart';
 class CartProvider with ChangeNotifier {
   var _cart;
 
-  get cart {
-    return _cart as Cart;
+  Cart get cart {
+    return _cart;
   }
 
   Future<bool> fetchAndSetCart(String ownerId) async {
@@ -71,5 +71,26 @@ class CartProvider with ChangeNotifier {
     _cart.totalPrice = double.parse(_cart.totalPrice.toStringAsFixed(2));
     item.totalItemPrice = double.parse(item.totalItemPrice.toStringAsFixed(2));
     notifyListeners();
+  }
+
+  Future<void> updateCart() async {
+    var items = [];
+    cart.items.forEach(
+      (element) => items.add({
+        "item": element.item,
+        "count": element.count,
+        "total_item_price": element.totalItemPrice,
+        "price": element.price,
+      }),
+    );
+    Map<String, dynamic> updatedCart = {
+      "owner": cart.owner,
+      "items": items,
+      "total_price": cart.totalPrice,
+      "total_count": cart.totalCount,
+    };
+    final response =
+        await sendDataToServer("/carts/${_cart.owner}", updatedCart, "put");
+    print(response);
   }
 }

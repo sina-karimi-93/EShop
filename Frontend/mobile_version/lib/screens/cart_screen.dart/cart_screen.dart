@@ -41,7 +41,8 @@ class _CartScreenState extends State<CartScreen> {
     if (!_isLoaded) {
       return const WaitingScreen();
     } else {
-      final cart = Provider.of<CartProvider>(context).cart as Cart;
+      final cartData = Provider.of<CartProvider>(context);
+      final cart = cartData.cart;
       return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.primary,
         drawer: ShopAppDrawer(size: size, isPortrait: isPortrait),
@@ -52,13 +53,17 @@ class _CartScreenState extends State<CartScreen> {
             style: TextStyle(color: Colors.white),
           ),
           actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.save)),
             IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  shopping_cart,
-                  color: Theme.of(context).colorScheme.secondary,
-                )),
+              icon: const Icon(Icons.save),
+              onPressed: () => cartData.updateCart(),
+            ),
+            IconButton(
+              icon: Icon(
+                shopping_cart,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+              onPressed: () {},
+            ),
           ],
         ),
         body: Column(

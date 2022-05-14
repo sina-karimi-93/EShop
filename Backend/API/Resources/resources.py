@@ -231,19 +231,24 @@ class Carts:
             "userCart": userCart
         }
 
-    def on_patch_detail(self, request, response, user_id: str) -> None:
+    def on_put_detail(self, request, response, user_id: str) -> None:
         """
         This method updates a single cart which related to a
         autheticated user(in front-end).
         """
-
+        print("Cart Update")
         data = APITools.prepare_header_data(request)
-        with Database(SERVER, PORT, DB_NAME, 'carts') as db:
-            db: Database
-            db.replace_record(
-                criteria={'owner': ObjectId(user_id)},
-                document=data,
-            )
+        pprint(data)
+        # with Database(SERVER, PORT, DB_NAME, 'carts') as db:
+        #     db: Database
+        #     db.replace_record(
+        #         criteria={'owner': ObjectId(user_id)},
+        #         document=data,
+        #     )
+        response.media = {
+            "status": "ok",
+            "message": falcon.HTTP_200,
+        }
 
     def on_delete_detail(self, request, response, user_id: str) -> None:
         """

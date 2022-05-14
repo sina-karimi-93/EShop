@@ -25,7 +25,7 @@ Future<dynamic> getDataFromServer(
 }
 
 Future<Map<String, dynamic>> sendDataToServer(
-    String path, Map<String, dynamic> data) async {
+    String path, Map<String, dynamic> data, String httpMethod) async {
   /*
   This method is for send data to the server via a post request
   and return it's response.
@@ -38,15 +38,33 @@ Future<Map<String, dynamic>> sendDataToServer(
     final url = Uri.http('192.168.1.104:8000', path);
     Map<String, String> headers = {"content-type": 'application/json'};
     var body = json.encode(data);
-    var response = await http.post(
-      url,
-      body: body,
-      headers: headers,
-    );
+    var response = await requestServer(httpMethod, url, body, headers);
     var result = response.body;
     var decodedData = json.decode(result);
     return decodedData;
   } catch (error) {
     rethrow;
+  }
+}
+
+Future<dynamic> requestServer(String httpMethod, url, body, headers) async {
+  if (httpMethod == "post") {
+    return await http.post(
+      url,
+      body: body,
+      headers: headers,
+    );
+  } else if (httpMethod == "put") {
+    return await http.put(
+      url,
+      body: body,
+      headers: headers,
+    );
+  } else {
+    return await http.patch(
+      url,
+      body: body,
+      headers: headers,
+    );
   }
 }
