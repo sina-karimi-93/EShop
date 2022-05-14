@@ -41,7 +41,6 @@ class MyApp extends StatelessWidget {
           builder: (context, snapshop) {
             if (snapshop.connectionState == ConnectionState.done) {
               if (snapshop.data!.isNotEmpty) {
-                print(snapshop.data);
                 Provider.of<UserProvider>(context, listen: false)
                     .setUser(snapshop.data!.first);
                 return const HomeScreen();
