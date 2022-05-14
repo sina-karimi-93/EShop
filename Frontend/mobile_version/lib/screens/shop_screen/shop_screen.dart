@@ -20,7 +20,7 @@ class _ShopScreenState extends State<ShopScreen> {
   @override
   void initState() {
     final providerData = Provider.of<ProductsProvider>(context, listen: false);
-    if (!providerData.isLoaded) {
+    if (providerData.isLoaded == false) {
       providerData.prepareProductsData().then((value) => {
             providerData.isLoaded = true,
             setState((() {
@@ -38,12 +38,9 @@ class _ShopScreenState extends State<ShopScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(_isLoading);
     final Size size = MediaQuery.of(context).size;
     final bool isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
-    // Provider.of<ProductsProvider>(context, listen: false).prepareProductsData();
-
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
       drawer: ShopAppDrawer(size: size, isPortrait: isPortrait),

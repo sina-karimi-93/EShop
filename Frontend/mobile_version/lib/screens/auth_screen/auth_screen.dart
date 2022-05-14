@@ -285,6 +285,7 @@ class _AuthScreenState extends State<AuthScreen> {
         ElevatedButton(
           onPressed: signup,
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
                 "Signup",

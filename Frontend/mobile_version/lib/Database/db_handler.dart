@@ -17,7 +17,7 @@ class DatabaseHandler {
       path.join(dbPath, "eshop.db"),
       onCreate: (db, version) {
         return db.execute(
-            "CREATE TABLE users(id TEXT PRIMARY KEY, username TEXT, email TEXT)");
+            "CREATE TABLE users(localId INTEGER PRIMARY KEY,serverId Text, username TEXT, email TEXT)");
       },
       version: 1,
     );
@@ -76,7 +76,7 @@ class DatabaseHandler {
     return user.first;
   }
 
-  static Future<int> deleteRecord(String table, String id) async {
+  static Future<int> deleteRecord(String table, int id) async {
     /*
     This method is for removing a record from database. It gets table name
     and id, then remove the record with that id.
@@ -86,7 +86,8 @@ class DatabaseHandler {
       id
     */
     final database = await getDatabase();
-    int result = await database.delete(table, where: "id = ?", whereArgs: [id]);
+    int result =
+        await database.delete(table, where: "localId = ?", whereArgs: [id]);
     return result;
   }
 }

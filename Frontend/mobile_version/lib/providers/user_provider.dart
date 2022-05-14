@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:mobile_version/Models/user.dart';
+import 'package:sqflite/sqflite.dart';
 import '../Database/db_handler.dart';
 import 'provider_tools.dart';
 
@@ -23,20 +24,15 @@ class UserProvider with ChangeNotifier {
 
     if (response["status"] == "ok") {
       final userData = {
-        "id": response["user"]["_id"]["\$oid"],
+        "serverId": response["user"]["_id"]["\$oid"],
         "username": response["user"]["username"],
         "email": response["user"]["email"],
       };
       // Insert user into local database
       int localId =
           await DatabaseHandler.insertRecord(table: "users", data: userData);
-      print(localId);
-      user = User(
-        localId: localId,
-        id: userData["id"],
-        username: userData["username"],
-        email: userData["email"],
-      );
+      userData["localId"] = localId;
+      setUser(userData);
       return true;
     }
     return false;
@@ -71,8 +67,17 @@ class UserProvider with ChangeNotifier {
     This method first remove the user from local database, then
     remove the user data from this class.
     */
-    DatabaseHandler.deleteRecord("users", user.id);
-    user = "";
+    DatabaseHandler.deleteRecord("users", user.localId);
+    return true;
+  }
+
+  bool setUser(userData) {
+    user = User(
+      localId: userData["localId"],
+      serverId: userData["serverId"],
+      username: userData["username"],
+      email: userData["email"],
+    );
     return true;
   }
 }

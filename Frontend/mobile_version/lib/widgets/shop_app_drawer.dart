@@ -121,7 +121,8 @@ class CustomDrawerHeader extends StatelessWidget {
         child: Center(
           child: FancyText(
             // text: "Enjoy your shop!\n${user.username}",
-            text: "Enjoy your shop!",
+            text:
+                "Enjoy your shop!${Provider.of<UserProvider>(context).user.username}",
             fontSize: 30,
             letterSpacing: 3,
             outlineColor: Theme.of(context).colorScheme.primary,
