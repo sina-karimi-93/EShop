@@ -18,10 +18,14 @@ class Item {
     required this.item,
     required this.price,
     required this.count,
+    this.color = "",
+    this.size = "",
     required this.totalItemPrice,
   });
   String item;
   double price;
+  String color;
+  String size;
   int count;
   double totalItemPrice;
 }

@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_version/Models/product.dart';
-import 'package:mobile_version/providers/products_provider.dart';
+import 'package:mobile_version/providers/cart_provider.dart';
 import 'package:provider/provider.dart';
 import '../../Constants/colors.dart';
 import '../../Constants/icons.dart';
@@ -27,7 +27,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("Called Detail");
     bool hasComments = widget.product.comments.isNotEmpty;
     final Size size = MediaQuery.of(context).size;
     final bool isPortrait =
@@ -337,6 +336,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     */
 
     // Showing relative Snackbar Message
+    bool isAdded = Provider.of<CartProvider>(context, listen: false).addItem(
+      itemId: widget.product.id,
+      price: widget.product.price,
+      color: widget.product.colors[colorSelector],
+      size: widget.product.sizes[sizeSelector],
+    );
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
@@ -350,9 +356,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 fontSize: 15,
               ),
             ),
-            const Text(
-              "has been added to the card",
-              style: TextStyle(
+            Text(
+              isAdded
+                  ? "has been added to the card"
+                  : " is currently in your cart",
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
               ),

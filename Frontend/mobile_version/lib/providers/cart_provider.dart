@@ -21,11 +21,15 @@ class CartProvider with ChangeNotifier {
       final userCart = response["userCart"];
       final List<Item> cartItems = [];
       for (Map<String, dynamic> item in userCart["items"]) {
-        cartItems.add(Item(
-            item: item["item"]["\$oid"],
-            price: item["price"],
-            count: item["count"],
-            totalItemPrice: item["total_item_price"]));
+        cartItems.add(
+          Item(
+              item: item["item"]["\$oid"],
+              price: item["price"],
+              count: item["count"],
+              totalItemPrice: item["total_item_price"],
+              color: item["color"],
+              size: item["size"]),
+        );
       }
       _cart = Cart(
           id: userCart["_id"]["\$oid"],
@@ -87,6 +91,7 @@ class CartProvider with ChangeNotifier {
 
   Future<void> updateCart() async {
     var items = [];
+    // Turn each Item to a Map and add it to the items list
     cart.items.forEach(
       (element) => items.add({
         "item": {"\$oid": element.item},
@@ -95,6 +100,7 @@ class CartProvider with ChangeNotifier {
         "price": element.price,
       }),
     );
+    // Turn Cart to a Map
     Map<String, dynamic> updatedCart = {
       "owner": {"\$oid": cart.owner},
       "items": items,
@@ -103,5 +109,23 @@ class CartProvider with ChangeNotifier {
     };
     final response =
         await sendDataToServer("/carts/${_cart.owner}", updatedCart, "put");
+  }
+
+  bool addItem({
+    required String itemId,
+    String color = "",
+    String size = "",
+    required double price,
+  }) {
+    bool isItemExists =
+        cart.items.where((element) => element.item == itemId).isNotEmpty;
+    if (isItemExists == false) {
+      Item item =
+          Item(item: itemId, count: 1, price: price, totalItemPrice: price);
+      cart.items.add(item);
+      notifyListeners();
+      return true;
+    }
+    return false;
   }
 }

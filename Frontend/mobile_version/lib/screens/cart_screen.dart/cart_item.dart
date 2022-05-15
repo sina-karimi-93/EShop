@@ -96,6 +96,50 @@ class CartItem extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 5),
+          // ======================== Color ========================
+          if (cartItem.color.isNotEmpty)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Color",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary),
+                ),
+                Text(
+                  cartItem.color,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary),
+                )
+              ],
+            ),
+          const SizedBox(height: 5),
+          // ======================== Size ========================
+          if (cartItem.size.isNotEmpty)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Size",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary),
+                ),
+                Text(
+                  cartItem.size,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary),
+                )
+              ],
+            ),
+          const SizedBox(height: 5),
           // ======================== Count ========================
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
