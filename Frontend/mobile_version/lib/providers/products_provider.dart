@@ -176,7 +176,5 @@ class ProductsProvider with ChangeNotifier {
     return false;
   }
 
-  Future<void> removeComment(Comment comment) async {
-    final response =sendDataToServer(path, data, httpMethod)
-  }
+  Future<void> removeComment(Comment comment) async {}
 }

@@ -393,7 +393,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("Your comment has been successfully added."),
+          content: Text("Something went wrong!"),
         ),
       );
     }
