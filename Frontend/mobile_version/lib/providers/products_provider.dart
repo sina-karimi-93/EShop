@@ -73,6 +73,7 @@ class ProductsProvider with ChangeNotifier {
             id: comment["id"]["\$oid"],
             comment: comment["comment"],
             ownerId: comment["owner"]["\$oid"],
+            username: comment["username"],
             createDate: DateFormat("yyyy-MM-dd")
                 .parse(comment["create_date"]["\$date"]),
           ),
@@ -141,10 +142,7 @@ class ProductsProvider with ChangeNotifier {
   }
 
   Future<bool> addNewComment(
-    String comment,
-    String productId,
-    String userId,
-  ) async {
+      String comment, String productId, String userId, String username) async {
     /*
     This method adds new comment to specific product. 
     args:
@@ -152,11 +150,13 @@ class ProductsProvider with ChangeNotifier {
       productId -> product id
       userID -> comment owner id
     */
-    final data = {"comment": comment, "owner": userId};
-    print(data);
+    final data = {
+      "comment": comment,
+      "owner": userId,
+      "username": username,
+    };
     final response =
         await sendDataToServer("/products/$productId/comments", data, "post");
-    print(response);
     if (response["status"] == "ok") {
       final newComment = response["comment"];
       final Product product =
@@ -166,6 +166,7 @@ class ProductsProvider with ChangeNotifier {
             id: newComment["id"]["\$oid"],
             comment: newComment["comment"],
             ownerId: newComment["owner"]["\$oid"],
+            username: newComment["username"],
             createDate: DateFormat("yyyy-MM-dd")
                 .parse(newComment["create_date"]["\$date"])),
       );
@@ -173,5 +174,9 @@ class ProductsProvider with ChangeNotifier {
       return true;
     }
     return false;
+  }
+
+  Future<void> removeComment(Comment comment) async {
+    final response =sendDataToServer(path, data, httpMethod)
   }
 }

@@ -135,6 +135,7 @@ class Products:
             "id": ObjectId(),
             "comment": data["comment"],
             "owner": ObjectId(data["owner"]),
+            "username": data["username"],
             "create_date": datetime.now()
         }
 

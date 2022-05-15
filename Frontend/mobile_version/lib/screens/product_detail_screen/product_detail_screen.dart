@@ -34,7 +34,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     final Size size = MediaQuery.of(context).size;
     final bool isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
-
+    final user = Provider.of<UserProvider>(context, listen: false).user;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Theme.of(context).colorScheme.primary,
@@ -233,42 +233,41 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       child: ListView.builder(
                         itemCount: widget.product.comments.length,
                         itemBuilder: (ctx, index) {
-                          return Dismissible(
-                            key: Key(widget.product.comments[index].id),
-                            background: const Padding(
-                              padding: EdgeInsets.only(right: 10),
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: Icon(Icons.delete, color: Colors.red),
+                          return Card(
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 8),
+                            child: ListTile(
+                              leading: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Icon(
+                                    Icons.person,
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
+                                  ),
+                                  Text(widget.product.comments[index].username),
+                                ],
                               ),
-                            ),
-                            direction: DismissDirection.endToStart,
-                            onDismissed: (event) =>
-                                _removeComment(widget.product.comments[index]),
-                            child: Card(
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 8),
-                              child: ListTile(
-                                leading: Icon(
-                                  Icons.person,
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                ),
-                                title: Text(
-                                    widget.product.comments[index].comment),
-                                subtitle: Text(
-                                  DateFormat.yMMMd().format(widget
-                                      .product.comments[index].createDate),
-                                ),
-                                trailing: IconButton(
-                                  icon: Icon(Icons.delete,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary),
-                                  onPressed: () => _removeComment(
-                                      widget.product.comments[index]),
-                                ),
+                              title:
+                                  Text(widget.product.comments[index].comment),
+                              subtitle: Text(
+                                DateFormat.yMMMd().format(
+                                    widget.product.comments[index].createDate),
                               ),
+                              trailing: user.username ==
+                                      widget.product.comments[index].username
+                                  ? IconButton(
+                                      icon: const Icon(
+                                        Icons.delete,
+                                        color: Colors.red,
+                                      ),
+                                      onPressed: () {
+                                        _removeComment(
+                                            widget.product.comments[index]);
+                                      },
+                                    )
+                                  : null,
                             ),
                           );
                         },
@@ -297,6 +296,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 // =============================== METHODS ====================================
 // =============================== METHODS ====================================
 // =============================== METHODS ====================================
+
   void _removeComment(Comment comment) {
     /*
     This method is responsible for removing a comment.
@@ -382,7 +382,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     User user = Provider.of<UserProvider>(context, listen: false).user;
 
     bool result = await Provider.of<ProductsProvider>(context, listen: false)
-        .addNewComment(newComment, widget.product.id, user.serverId);
+        .addNewComment(
+      newComment,
+      widget.product.id,
+      user.serverId,
+      user.username,
+    );
     if (result) {
       Navigator.of(context).pop();
     } else {

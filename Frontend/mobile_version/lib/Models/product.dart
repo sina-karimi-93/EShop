@@ -29,10 +29,12 @@ class Comment {
     required this.id,
     required this.comment,
     required this.ownerId,
+    required this.username,
     required this.createDate,
   });
   final String id;
   final String comment;
   final String ownerId;
+  final String username;
   final DateTime createDate;
 }

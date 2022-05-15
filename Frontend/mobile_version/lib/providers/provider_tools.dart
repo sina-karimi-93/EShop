@@ -60,6 +60,12 @@ Future<dynamic> requestServer(String httpMethod, url, body, headers) async {
       body: body,
       headers: headers,
     );
+  } else if (httpMethod == "delete") {
+    return await http.delete(
+      url,
+      body: body,
+      headers: headers,
+    );
   } else {
     return await http.patch(
       url,
