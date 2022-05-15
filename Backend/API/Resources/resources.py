@@ -128,23 +128,28 @@ class Products:
                 "owner:: 'user-id'
             }
         """
+        print("New comment request")
         data = APITools.prepare_header_data(request)
 
         prepared_data = {
             "id": ObjectId(),
-            "message": data["message"],
+            "comment": data["comment"],
             "owner": ObjectId(data["owner"]),
             "create_date": datetime.now()
         }
 
         with Database(SERVER, PORT, DB_NAME, 'products') as db:
-
-            db.update_record(criteria={"_id": ObjectId(product_id)},
-                             document={"$push": {"comments": prepared_data}},
-                             )
-
-        response.text = falcon.HTTP_200
-        response.status = falcon.HTTP_200
+            db: Database
+            comment_id = db.update_record(criteria={"_id": ObjectId(product_id)},
+                                          document={
+                                              "$push": {"comments": prepared_data}},
+                                          )
+        prepared_data = APITools.prepare_data_before_send(prepared_data)
+        response.media = {
+            "status": "ok",
+            "message": falcon.HTTP_200,
+            "comment": prepared_data,
+        }
 
     def on_delete_comment(self, request, response, product_id: str, comment_id: str) -> None:
         """
@@ -373,12 +378,24 @@ class Users:
             user = db.get_record({"username": user_data["username"]})
             if user is None:
                 new_user = db.insert_record(user_data)
+                new_cart = {
+                    "owner": ObjectId(new_user),
+                    "items": [],
+                    "total_count": 0,
+                    "total_price": 0.0,
+                }
+                # Make new cart for user
+                db.collection = 'carts'
+                new_cart_id = db.insert_record(new_cart)
+                # reshape idies for response
                 new_user = APITools.prepare_data_before_send(new_user)
-                print(new_user)
+                new_cart_id = APITools.prepare_data_before_send(new_cart_id)
                 response.media = {
                     "status": "ok",
                     "message": falcon.HTTP_200,
-                    "user": new_user}
+                    "user": new_user,
+                    "cart_id": new_cart_id,
+                }
                 return
             response.media = {"status": "error",
                               "message": "This username is currently exists!",

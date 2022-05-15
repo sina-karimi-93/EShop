@@ -64,10 +64,6 @@ class UserProvider with ChangeNotifier {
         await sendDataToServer('/users/signup', userCredential, "post");
 
     if (response["status"] == "ok") {
-      // Make new cart for user
-      Map<String, dynamic> makeUserCart = await sendDataToServer(
-          '/carts/add/${response["user"]}', {"user": response["user"]}, "post");
-      print(makeUserCart);
       return true;
     }
     return response["message"];

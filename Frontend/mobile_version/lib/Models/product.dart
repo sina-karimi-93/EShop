@@ -8,7 +8,7 @@ class Product {
   late final List<dynamic> colors;
   late final List<dynamic> categories;
   late final List<dynamic> images;
-  late final List<dynamic> comments;
+  late final List<Comment> comments;
 
   Product({
     required this.id,
@@ -22,4 +22,17 @@ class Product {
     required this.images,
     required this.comments,
   });
+}
+
+class Comment {
+  Comment({
+    required this.id,
+    required this.comment,
+    required this.ownerId,
+    required this.createDate,
+  });
+  final String id;
+  final String comment;
+  final String ownerId;
+  final DateTime createDate;
 }

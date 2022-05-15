@@ -3,7 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_version/Models/product.dart';
+import 'package:mobile_version/Models/user.dart';
 import 'package:mobile_version/providers/cart_provider.dart';
+import 'package:mobile_version/providers/products_provider.dart';
+import 'package:mobile_version/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import '../../Constants/colors.dart';
 import '../../Constants/icons.dart';
@@ -231,8 +234,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         itemCount: widget.product.comments.length,
                         itemBuilder: (ctx, index) {
                           return Dismissible(
-                            key: Key(
-                                widget.product.comments[index]['id']['\$oid']),
+                            key: Key(widget.product.comments[index].id),
                             background: const Padding(
                               padding: EdgeInsets.only(right: 10),
                               child: Align(
@@ -241,9 +243,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               ),
                             ),
                             direction: DismissDirection.endToStart,
-                            onDismissed: (event) => _removeComment(widget
-                                .product
-                                .comments[index] as Map<String, dynamic>),
+                            onDismissed: (event) =>
+                                _removeComment(widget.product.comments[index]),
                             child: Card(
                               margin: const EdgeInsets.symmetric(
                                   horizontal: 8, vertical: 8),
@@ -254,13 +255,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                       Theme.of(context).colorScheme.secondary,
                                 ),
                                 title: Text(
-                                    widget.product.comments[index]["message"]),
+                                    widget.product.comments[index].comment),
                                 subtitle: Text(
-                                  DateFormat.yMMMd().format(
-                                    DateFormat("yyyy-MM-dd").parse(
-                                        widget.product.comments[index]
-                                            ["create_date"]["\$date"]),
-                                  ),
+                                  DateFormat.yMMMd().format(widget
+                                      .product.comments[index].createDate),
                                 ),
                                 trailing: IconButton(
                                   icon: Icon(Icons.delete,
@@ -299,7 +297,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 // =============================== METHODS ====================================
 // =============================== METHODS ====================================
 // =============================== METHODS ====================================
-  void _removeComment(Map<String, dynamic> comment) {
+  void _removeComment(Comment comment) {
     /*
     This method is responsible for removing a comment.
     */
@@ -376,11 +374,24 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     );
   }
 
-  void _addCommentHandler() {
+  void _addCommentHandler() async {
     /* This method gets the value of the textfield in modalbottomsheet
      and submit it to the comments of the products.*/
-    String newComment = _commentController.text;
-    Navigator.of(context).pop();
+    String newComment = _commentController.value.text;
+
+    User user = Provider.of<UserProvider>(context, listen: false).user;
+
+    bool result = await Provider.of<ProductsProvider>(context, listen: false)
+        .addNewComment(newComment, widget.product.id, user.serverId);
+    if (result) {
+      Navigator.of(context).pop();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Your comment has been successfully added."),
+        ),
+      );
+    }
   }
 
   void _addCommentModal() {

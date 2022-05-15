@@ -66,6 +66,18 @@ class ProductsProvider with ChangeNotifier {
     */
     _products = [];
     for (var product in loadedProducts) {
+      List<Comment> comments = [];
+      product["comments"].forEach((comment) {
+        comments.add(
+          Comment(
+            id: comment["id"]["\$oid"],
+            comment: comment["comment"],
+            ownerId: comment["owner"]["\$oid"],
+            createDate: DateFormat("yyyy-MM-dd")
+                .parse(comment["create_date"]["\$date"]),
+          ),
+        );
+      });
       _products.add(
         Product(
           id: product["_id"]["\$oid"],
@@ -78,7 +90,7 @@ class ProductsProvider with ChangeNotifier {
           colors: product["colors"],
           sizes: product["sizes"],
           images: _convertBinariesToImages(product["images"]),
-          comments: product["comments"],
+          comments: comments,
         ),
       );
     }
@@ -126,5 +138,40 @@ class ProductsProvider with ChangeNotifier {
     final Product product =
         products.where((element) => element.id == id).toList().first;
     return product;
+  }
+
+  Future<bool> addNewComment(
+    String comment,
+    String productId,
+    String userId,
+  ) async {
+    /*
+    This method adds new comment to specific product. 
+    args:
+      comment -> user comment for that product
+      productId -> product id
+      userID -> comment owner id
+    */
+    final data = {"comment": comment, "owner": userId};
+    print(data);
+    final response =
+        await sendDataToServer("/products/$productId/comments", data, "post");
+    print(response);
+    if (response["status"] == "ok") {
+      final newComment = response["comment"];
+      final Product product =
+          _products.where((element) => element.id == productId).toList().first;
+      product.comments.add(
+        Comment(
+            id: newComment["id"]["\$oid"],
+            comment: newComment["comment"],
+            ownerId: newComment["owner"]["\$oid"],
+            createDate: DateFormat("yyyy-MM-dd")
+                .parse(newComment["create_date"]["\$date"])),
+      );
+      notifyListeners();
+      return true;
+    }
+    return false;
   }
 }
