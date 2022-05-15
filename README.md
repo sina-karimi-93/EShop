@@ -10,7 +10,7 @@ Database has several collections, namely products, carts, users and orders.
 users:
     {
         _id : ObjectId,
-        username : String,
+        username : String,\n
         email : String,
         password : String,
         create_date : Date
