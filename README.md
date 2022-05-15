@@ -7,7 +7,7 @@ and for front-end, I am using Flutter for mobile and desktop apps.
 # Database
 Database has several collections, namely products, carts, users and orders.
 
-users:<br />
+<h1>users</h1>:
     {<br />
         _id : ObjectId,<br />
         username : String,<br />
@@ -16,7 +16,7 @@ users:<br />
         create_date : Date<br />
     }
 
-carts:<br />
+carts:
     {<br />
         _id : ObjectId,<br />
         owner : ObjectId,<br />
@@ -28,13 +28,13 @@ carts:<br />
                 total_item_price : double,<br />
                 color : String,<br />
                 size : String<br />
-            }<br />
+            }
         ],<br />
         total_price : double,<br />
         total_count : Int     <br />   
     }
 
-products:<br />
+products:
     {<br />
         _id : ObjectId,<br />
         title : String,<br />
@@ -51,7 +51,7 @@ products:<br />
                 username : String,<br />
                 comment : String,<br />
                 create_date : Date<br />
-            }<br />
+            }
         ],<br />
         images : [Binary]
     }
