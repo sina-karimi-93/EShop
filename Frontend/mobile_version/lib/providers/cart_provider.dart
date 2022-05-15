@@ -98,6 +98,8 @@ class CartProvider with ChangeNotifier {
         "count": element.count,
         "total_item_price": element.totalItemPrice,
         "price": element.price,
+        "color": element.color,
+        "size": element.size,
       }),
     );
     // Turn Cart to a Map
@@ -111,18 +113,33 @@ class CartProvider with ChangeNotifier {
         await sendDataToServer("/carts/${_cart.owner}", updatedCart, "put");
   }
 
-  bool addItem({
-    required String itemId,
-    String color = "",
-    String size = "",
-    required double price,
-  }) {
+  Future<bool> addItem(
+      {required String itemId,
+      String color = "",
+      String size = "",
+      required double price}) async {
+    /*
+    This method add new item to the cart. If item is exists it will
+    return false, otherwise it start the adding process.
+    */
+    // Check whether item exists or not
     bool isItemExists =
-        cart.items.where((element) => element.item == itemId).isNotEmpty;
+        _cart.items.where((element) => element.item == itemId).isNotEmpty;
+
     if (isItemExists == false) {
-      Item item =
-          Item(item: itemId, count: 1, price: price, totalItemPrice: price);
-      cart.items.add(item);
+      Item item = Item(
+        item: itemId,
+        count: 1,
+        price: price,
+        totalItemPrice: price,
+        color: color,
+        size: size,
+      );
+      _cart.items.add(item);
+      _cart.totalCount += 1;
+      _cart.totalPrice += price;
+
+      await updateCart();
       notifyListeners();
       return true;
     }

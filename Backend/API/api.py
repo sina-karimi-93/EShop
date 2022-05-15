@@ -29,6 +29,7 @@ app.add_route('/products/categories/{category_name}',
 
 #  ================================================ Carts =====================================================
 app.add_route('/carts/{user_id}', carts, suffix="detail")
+app.add_route('/carts/add/{user_id}', carts, suffix="add")
 
 #  ================================================ Blogs =====================================================
 app.add_route('/blogs', blogs)

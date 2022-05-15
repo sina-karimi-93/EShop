@@ -225,10 +225,35 @@ class Carts:
                 }
             )
         userCart = APITools.prepare_data_before_send(data=cart)
+        print(userCart)
         response.media = {
             "status": "ok",
             "message": falcon.HTTP_200,
             "userCart": userCart
+        }
+
+    def on_post_add(self, request, response, user_id: str) -> None:
+        """
+        This method make new cart for user. When a user register,
+        he/she needs a cart for his/her shop. Here first we get
+        user id through post request, then make a new cart based
+        on his/her user_id.
+        """
+        userData = APITools.prepare_header_data(request)
+        new_cart = {
+            "owner": ObjectId(userData["user"]),
+            "items": [],
+            "total_count": 0,
+            "total_price": 0,
+        }
+        with Database(SERVER, PORT, DB_NAME, 'carts') as db:
+            db: Database
+
+            new_cart_id = db.insert_record(new_cart)
+        response.media = {
+            "status": "ok",
+            "message": falcon.HTTP_200,
+            "cart_id": {"$oid": str(new_cart_id)}
         }
 
     def on_put_detail(self, request, response, user_id: str) -> None:

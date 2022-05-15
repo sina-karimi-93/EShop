@@ -329,20 +329,25 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     );
   }
 
-  void _addToCard() {
+  void _addToCard() async {
     /*
     This method stands for collecting data which user selected
     for this product and add it to the cards.
     */
 
-    // Showing relative Snackbar Message
-    bool isAdded = Provider.of<CartProvider>(context, listen: false).addItem(
+    final isAdded =
+        await Provider.of<CartProvider>(context, listen: false).addItem(
       itemId: widget.product.id,
       price: widget.product.price,
-      color: widget.product.colors[colorSelector],
-      size: widget.product.sizes[sizeSelector],
+      color: widget.product.colors.isNotEmpty
+          ? widget.product.colors[colorSelector]
+          : "",
+      size: widget.product.sizes.isNotEmpty
+          ? widget.product.sizes[sizeSelector]
+          : "",
     );
 
+    // Showing relative Snackbar Message
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
