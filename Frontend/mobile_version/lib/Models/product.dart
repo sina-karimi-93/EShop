@@ -22,6 +22,10 @@ class Product {
     required this.images,
     required this.comments,
   });
+
+  void removeComment(String id) {
+    comments.removeWhere((cm) => cm.id == id);
+  }
 }
 
 class Comment {

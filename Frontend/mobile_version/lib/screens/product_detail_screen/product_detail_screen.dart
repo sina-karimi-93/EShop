@@ -35,6 +35,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     final bool isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
     final user = Provider.of<UserProvider>(context, listen: false).user;
+    Provider.of<ProductsProvider>(context);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Theme.of(context).colorScheme.primary,
@@ -262,10 +263,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                         Icons.delete,
                                         color: Colors.red,
                                       ),
-                                      onPressed: () {
-                                        _removeComment(
-                                            widget.product.comments[index]);
-                                      },
+                                      onPressed: () => _removeComment(
+                                          widget.product.comments[index]),
                                     )
                                   : null,
                             ),
@@ -297,34 +296,39 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 // =============================== METHODS ====================================
 // =============================== METHODS ====================================
 
-  void _removeComment(Comment comment) {
+  Future<void> _removeComment(Comment comment) async {
     /*
     This method is responsible for removing a comment.
     */
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Text(
-              "Comment successfully ",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 15,
+    print("Delete comment Clicked");
+    bool result = await Provider.of<ProductsProvider>(context, listen: false)
+        .removeComment(widget.product.id, comment);
+    if (result) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Text(
+                "Comment successfully ",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
               ),
-            ),
-            Text(
-              "deleted",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 15,
-                color: Colors.red,
+              Text(
+                "deleted",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                  color: Colors.red,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   void _addToCard() async {

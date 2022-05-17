@@ -22,7 +22,7 @@ app.add_route('/products', products)
 app.add_route('/products/{product_id}', products, suffix='detail')
 app.add_route('/products/{product_id}/comments', products, suffix='comment')
 app.add_route(
-    '/products/{product_id}/comment/{comment_id}', products, suffix='comment')
+    '/products/{product_id}/comments/{comment_id}', products, suffix='comment')
 app.add_route('/products/categories', products, suffix='categories')
 app.add_route('/products/categories/{category_name}',
               products, suffix='category_products')

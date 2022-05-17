@@ -176,5 +176,21 @@ class ProductsProvider with ChangeNotifier {
     return false;
   }
 
-  Future<void> removeComment(Comment comment) async {}
+  Future<bool> removeComment(String productId, Comment comment) async {
+    /*
+    This method remove a comment from comments in a product.
+    */
+    final data = {"user_id": comment.ownerId};
+    final resutlt = await sendDataToServer(
+        "/products/$productId/comments/${comment.id}", data, "delete");
+    if (resutlt["status"] == "ok") {
+      Product product =
+          _products.where((Product product) => product.id == productId).first;
+      product.removeComment(comment.id);
+      notifyListeners();
+      return true;
+    }
+    notifyListeners();
+    return false;
+  }
 }

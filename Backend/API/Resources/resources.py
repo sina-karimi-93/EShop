@@ -4,6 +4,7 @@ Each resource class have to inherit from BaseResource interface.
 """
 
 from pprint import pprint
+from urllib import response
 import falcon
 from datetime import datetime
 from bson.objectid import ObjectId
@@ -25,12 +26,12 @@ class Products:
         This function is for a get request and returns all products
         from database.
         """
+        print("Products Request")
         with Database(SERVER, PORT, DB_NAME, 'products') as db:
 
             products = [data for data in db.get_record(
                 query=None, find_one=False)]
         APITools.check_prepare_send(response, products)
-        print("Request has beeen answered!")
 
     # def on_post(self, request, response) -> None:
     #     """
@@ -160,13 +161,15 @@ class Products:
         the user id is match with comment owner or not. If yes it will
         remove the comment, and if not it will response error.
         """
+        print("Comment Delete Request")
         data = APITools.prepare_header_data(request)
+        print(data)
         user_id = ObjectId(data["user_id"])
         product_id = ObjectId(product_id)
         comment_id = ObjectId(comment_id)
 
         with Database(SERVER, PORT, DB_NAME, 'products') as db:
-
+            db: Database
             comment = db.get_record(query={"_id": product_id},
                                     projection={"comments": {
                                         "$elemMatch": {"id": comment_id}}},
@@ -175,13 +178,19 @@ class Products:
 
             comment_user_id = comment["owner"]
             if comment_user_id == user_id:
-                db.delete_record({"_id": product_id,
-                                  "comments": {
-                                      "$elemMatch": {
-                                          "id": comment_id
-                                      }
-                                  }})
-            # todo: add responses
+                db.update_record(
+                    criteria={"_id": product_id},
+                    document={"$pull": {"comments": {"id": comment_id}}}
+                )
+                response.media = {
+                    "status": "ok",
+                    "message": "comment successfully deleted"
+                }
+            else:
+                response.media = {
+                    "status": "error",
+                    "message": "owner and the user id are not match!"
+                }
 
     def on_patch_comment(self, request, response, product_id: str, comment_id: str) -> None:
         """
@@ -231,7 +240,6 @@ class Carts:
                 }
             )
         userCart = APITools.prepare_data_before_send(data=cart)
-        print(userCart)
         response.media = {
             "status": "ok",
             "message": falcon.HTTP_200,
