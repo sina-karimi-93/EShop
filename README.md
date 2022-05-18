@@ -11,6 +11,7 @@ For registration, user have to insert his username, email, password and re-enter
 If registration is successfull, user will redirect to the login page.
 In backend, after a user register, we make a new cart based on his id for his/her shopping.
 </p>
+
 ![1652857999227](https://user-images.githubusercontent.com/58491712/168981382-01642c18-c11a-4156-94d8-cff0581a6c4a.jpg)
 
 <h3>Login</h3>
