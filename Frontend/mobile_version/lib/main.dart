@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
               if (snapshop.data!.isNotEmpty) {
                 Provider.of<UserProvider>(context, listen: false)
                     .setUser(snapshop.data!.first);
-                return const HomeScreen();
+                return const ShopScreen();
               } else {
                 return const AuthScreen();
               }

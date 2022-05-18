@@ -42,14 +42,6 @@ class ShopAppDrawer extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      GestureDetector(
-                        child: const DrawerItems(
-                          title: "Home",
-                          icon: Icons.home,
-                        ),
-                        onTap: () => Navigator.of(context)
-                            .pushNamed(HomeScreen.routeName),
-                      ),
                       const Divider(),
                       GestureDetector(
                           onTap: () => Navigator.of(context)
