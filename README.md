@@ -4,7 +4,10 @@ This project is about to developing an online shop.
 I have tried to use MongoDB and Falcon (Python API Framework) for backend.
 and for front-end, I am using Flutter for mobile and desktop apps.
 
+<div style="text-align:center;">
+
 <img src="https://user-images.githubusercontent.com/58491712/168982911-72423d0f-5574-4074-9be1-3d2442a6d95f.jpg" width="50%" height="50%">
+</div>
 
 # Design
 <h3>Sign Up</h3>
