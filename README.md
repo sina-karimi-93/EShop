@@ -14,6 +14,7 @@ In backend, after a user register, we make a new cart based on his id for his/he
 
 ![1652857999227](https://user-images.githubusercontent.com/58491712/168981382-01642c18-c11a-4156-94d8-cff0581a6c4a.jpg)
 
+<hr/>
 <h3>Login</h3>
 
 ![1652857999223](https://user-images.githubusercontent.com/58491712/168982987-ff7c1d72-c45e-439d-aedb-128c232c76fc.jpg)
