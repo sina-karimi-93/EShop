@@ -82,14 +82,12 @@ This page shows the user cart and its items . User can increase or deacrease the
 
 
 <h3>App Menu</h3>
+<p>This is app menu. At the top, we can see a welcome message for the user. Below that there several items which user can navigate through these pages.
+</P>
 
 ![1652857999209](https://user-images.githubusercontent.com/58491712/168982911-72423d0f-5574-4074-9be1-3d2442a6d95f.jpg)
 
-
-
-
-
-
+<hr/>
 
 
 # Database
