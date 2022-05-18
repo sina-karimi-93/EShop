@@ -8,7 +8,9 @@ and for front-end, I am using Flutter for mobile and desktop apps.
   margin-left: auto;
   margin-right: auto;">
 
-<img src="https://user-images.githubusercontent.com/58491712/168982911-72423d0f-5574-4074-9be1-3d2442a6d95f.jpg" width="50%" height="50%">
+<img src="https://user-images.githubusercontent.com/58491712/168982911-72423d0f-5574-4074-9be1-3d2442a6d95f.jpg" style="display: block;
+  margin-left: auto;
+  margin-right: auto;" width="50%" height="50%">
 </div>
 
 # Design
